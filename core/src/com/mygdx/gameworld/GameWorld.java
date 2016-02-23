@@ -27,7 +27,7 @@ public class GameWorld {
 	}
 
 	private GameState currentState;
-
+	//passes in device dependent variables and creates game objects
 	public GameWorld(float buttonWidth, float screenWidth, float screenHeight,
 			float rockWidth) {
 		this.buttonWidth = buttonWidth;
