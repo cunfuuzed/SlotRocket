@@ -105,8 +105,8 @@ public class GameRenderer {
 						Missile item = (Missile) missiles.get(i);
 						for (int j = 0; j < 4; j++) {
 							if (item.getGap()[j] > 0) {
-								shapeRenderer.rect(item.getPosition().x + (j * gapWidth),
-										item.getPosition().y + 4 - item.getGap()[j], gapWidth, item.getGap()[j]*gapWidth);
+								shapeRenderer.rect(item.getPosition().x + (j * gapWidth) + halfGap,
+										item.getPosition().y + (4 - item.getGap()[j]) * gapWidth, gapWidth, item.getGap()[j]*gapWidth);
 							}
 						}
 					}
