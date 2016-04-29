@@ -76,12 +76,11 @@ public class Generator {
 	}
 
 	private void spawn() {
-		// temporary test set-up, no randomized Asteroid types or health
-		Asteroid item = asteroidPool.obtain();
+		// temporary basic set-up , no randomized Asteroid types or health
+		Asteroid item = asteroidPool.obtain(); //init method Asteroid object from pool in this class
 		item.setHealth(1);
 		item.setType(1);
-		if (liveAsteroids.size < 1) { // doesn't check for overlap if only one
-										// asteroid
+		if (liveAsteroids.size < 1) { //spawn asteroid with no overlap check if it's the first one generated
 			float x = (screenWidth - rockWidth) * randomizer.nextFloat();
 			item.setPosition(x, -rockWidth - 2.0f);
 			

@@ -15,15 +15,25 @@ public class GameScreen implements Screen {
 	private GameWorld world;
 
 	public GameScreen() {
-
+		//gets device screen width
 		float screenWidth = (float) Gdx.graphics.getWidth();
+		//gets device screen height
 		float screenHeight = (float) Gdx.graphics.getHeight();
+		//sets the lower screen buttons to a standard fraction of the screen
+		//so it's the same ratio on different size device screens
 		float buttonWidth = screenWidth / 9;
+		//sets the ratio of the size of the falling asteroids to the devices screen width
+		//so it's scaled to different size device screens
 		float rockWidth = screenWidth / 7;
 
+		//creates a gameworld and render object, these are the two main objects that talk to
+		//each other to run the game logic (game obj) and render  the graphics (render obj)
 		world = new GameWorld(buttonWidth, screenWidth, screenHeight, rockWidth);
 		renderer = new GameRenderer(world, screenWidth, screenHeight);
 
+		//creates an input multiplexer, allowing for two different input handlers,
+		//one for the upper screen where the asteroids are and one for controlling the blocks
+		//on the bottom
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(new InputHandler(world));
 		multiplexer.addProcessor(new UpperHandler(world));
