@@ -62,7 +62,7 @@ public class Missile implements Poolable {
 	}
 	
 	public void setGap (int[] gap){
-		this.gap = gap;
+		this.gap = gap.clone();
 	}
 
 	@Override
