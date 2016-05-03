@@ -49,6 +49,8 @@ public class GameScreen implements Screen {
 		renderer.render();	  // then renders the graphics
 	}
 
+	//following methods print to the console changes to the gamescreen, incuding
+	//resizing, opening and closing
 	@Override
 	public void resize(int width, int height) {
 		Gdx.app.log("GameScreen", "resizing");

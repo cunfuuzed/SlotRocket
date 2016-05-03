@@ -13,11 +13,16 @@ public class Battery {
 	private Block launcher;
 	private float gapWidth;
 	private int[] launchGap;
-	private Vector2 missleWidth;
+	private Vector2 missileWidth;
 	private Vector2 roidWidth;
+	private float missileVelocity;
+	
 
+	//all render calls for missiles are made on the liveMissiles array
 	private final Array<Missile> liveMissiles = new Array<Missile>(false, 16);
-//all render calls for missles are made on the liveMissiles array
+
+	// missilePool is a gdx.util Pool of objects that can be reused to avoid
+	//making new objects that have to be garbage collected later
 	private final Pool<Missile> missilePool = new Pool<Missile>(36) {
 		@Override
 		protected Missile newObject() {
@@ -32,8 +37,9 @@ public class Battery {
 		launcher = myWorld.getLauncher();
 		gapWidth = myWorld.getGapWidth();
 		launchGap = new int[4];
-		missleWidth = new Vector2();
+		missileWidth = new Vector2();
 		roidWidth = new Vector2();
+		missileVelocity = -100;
 
 	}
 
@@ -73,13 +79,13 @@ public class Battery {
 		boolean result = true;
 		for (int i = 0; i < 4; i++) {
 			if (missleShape[i] > 0) {
-				missleWidth.x = i;
+				missileWidth.x = i;
 				break;
 			}
 		}
 		for (int i = 3; i > -1; i--) {
 			if (missleShape[i] > 0) {
-				missleWidth.y = i;
+				missileWidth.y = i;
 				break;
 			}
 		}
@@ -95,10 +101,10 @@ public class Battery {
 				break;
 			}
 		}
-		if ((missleWidth.y - missleWidth.x) != (roidWidth.y - roidWidth.x)) {
+		if ((missileWidth.y - missileWidth.x) != (roidWidth.y - roidWidth.x)) {
 			result = false;
 		} else {
-			for (int i = (int) missleWidth.x; i < (int) missleWidth.y + 1; i++) {
+			for (int i = (int) missileWidth.x; i < (int) missileWidth.y + 1; i++) {
 				for (int j = (int) roidWidth.x; i < (int) roidWidth.y + 1; i++) {
 					if (missleShape[i] != roidShape[j]) {
 						result = false;
@@ -116,7 +122,7 @@ public class Battery {
 		boolean fits = false;
 		Missile item = missilePool.obtain();
 		item.setPosition(generator.getAsteroids().get(index).getPosition().x
-				- missleWidth.x * gapWidth, ground.getBounds().y - 4 * gapWidth);
+				- missileWidth.x * gapWidth, ground.getBounds().y - 4 * gapWidth);
 		shapeGap();
 		item.setGap(launchGap);
 		fits = fits(launchGap, generator.getAsteroids().get(index).getGap());
@@ -124,6 +130,7 @@ public class Battery {
 			item.setFits(true);
 		}
 		item.setAlive(true);
+		item.setVelocity(this.missileVelocity);
 		liveMissiles.add(item);
 
 	}
