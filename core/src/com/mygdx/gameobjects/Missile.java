@@ -62,7 +62,10 @@ public class Missile implements Poolable {
 	}
 	
 	public void setGap (int[] gap){
-		this.gap = gap.clone();
+		for(int i=0; i<gap.length; i++){
+			this.gap[i] = gap[i];
+		}
+		
 	}
 
 	@Override
@@ -74,7 +77,7 @@ public class Missile implements Poolable {
 	}
 	
 	public void update(float delta){
-		
+			//only updates position if the missile is alive
 		if(isAlive){
 			position.y += velocity.y * delta;
 		}

@@ -117,7 +117,8 @@ public class Battery {
 		return result;
 
 	}
-
+	// fire method called when user clicks an an asteroid to fire a missile at that
+	//specific asteroid
 	public void fire(int index) {
 		boolean fits = false;
 		Missile item = missilePool.obtain();
