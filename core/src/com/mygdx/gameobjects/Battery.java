@@ -1,5 +1,8 @@
 package com.mygdx.gameobjects;
 
+import java.util.Arrays;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -62,7 +65,7 @@ public class Battery {
 	}
 
 	private void shapeGap() {
-		// translates launcher into one dimetional integer array, stores in
+		// translates launcher into one dimensional integer array, stores in
 		// launchGap
 		for (int i = 0; i < launcher.getRows(); i++) {
 			int height = 0;
@@ -74,46 +77,15 @@ public class Battery {
 			launchGap[i] = height;
 		}
 	}
-
+	// takes a missile and asteroid gap and returns true if the missile fits asteroid
 	private boolean fits(int[] missleShape, int[] roidShape) {
-		boolean result = true;
-		for (int i = 0; i < 4; i++) {
-			if (missleShape[i] > 0) {
-				missileWidth.x = i;
-				break;
-			}
-		}
-		for (int i = 3; i > -1; i--) {
-			if (missleShape[i] > 0) {
-				missileWidth.y = i;
-				break;
-			}
-		}
-		for (int i = 0; i < 4; i++) {
-			if (roidShape[i] > 0) {
-				roidWidth.x = i;
-				break;
-			}
-		}
-		for (int i = 3; i > -1; i--) {
-			if (roidShape[i] > 0) {
-				roidWidth.y = i;
-				break;
-			}
-		}
-		if ((missileWidth.y - missileWidth.x) != (roidWidth.y - roidWidth.x)) {
+		boolean result;
+		if(Arrays.equals(missleShape, roidShape)){
+			result = true;
+		}else{
 			result = false;
-		} else {
-			for (int i = (int) missileWidth.x; i < (int) missileWidth.y + 1; i++) {
-				for (int j = (int) roidWidth.x; i < (int) roidWidth.y + 1; i++) {
-					if (missleShape[i] != roidShape[j]) {
-						result = false;
-						break;
-					}
-				}
-			}
 		}
-
+		Gdx.app.log("Battery", "Fits = " + result);
 		return result;
 
 	}

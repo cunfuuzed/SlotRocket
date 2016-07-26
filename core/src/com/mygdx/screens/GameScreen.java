@@ -41,7 +41,8 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(multiplexer);
 
 	}
-
+	
+	//this is called in the main thread of the game, calls game world update and then renders
 	@Override
 	public void render(float delta) {
 		
