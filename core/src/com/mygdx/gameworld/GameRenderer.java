@@ -106,7 +106,8 @@ public class GameRenderer {
 						for (int j = 0; j < 4; j++) {
 							if (item.getGap()[j] > 0) {
 								shapeRenderer.rect(item.getPosition().x + (j * gapWidth) + halfGap,
-										item.getPosition().y + (4 - item.getGap()[j]) * gapWidth, gapWidth, item.getGap()[j]*gapWidth);
+										item.getPosition().y + (4 - item.getGap()[j]) * gapWidth,
+										gapWidth, item.getGap()[j]*gapWidth);
 							}
 						}
 					}
@@ -116,6 +117,19 @@ public class GameRenderer {
 		shapeRenderer.setColor(0, 0, 200, 1);
 		shapeRenderer.rect(ground.getBounds().x, ground.getBounds().y,
 				ground.getBounds().width, ground.getBounds().height);
+		shapeRenderer.end();
+		//temporary outline render batch for bounding box outlines
+		shapeRenderer.begin(ShapeType.Line);
+		shapeRenderer.setColor(200, 200, 200, 1);
+		if (missiles.size > 0) {
+			for (int i = 0; i < missiles.size; i++) {
+				Missile item = (Missile) missiles.get(i);
+				shapeRenderer.rect(item.getBounds().x,
+						item.getBounds().y,
+						item.getBounds().width, 
+						item.getBounds().height);
+			}
+		}
 		shapeRenderer.end();
 
 	}

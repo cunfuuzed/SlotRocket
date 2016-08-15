@@ -49,12 +49,29 @@ public class Battery {
 	public void update(float delta) {
 		// updates live missiles, deletes destroyed ones
 		Missile item;
+		boolean fitsonCollision = false;
 		if (liveMissiles.size > 0) {
 			for (int i = 0; i < liveMissiles.size; i++) {
 				item = (Missile) liveMissiles.get(i);
 
 				if (item.isAlive()) {
 					item.update(delta);
+					
+					// check loop missile fitting gap on asteroid collision
+					for(int j = 0; j < myWorld.getGenerator().getAsteroids().size; j++){
+						fitsonCollision = false;
+						Asteroid rock = (Asteroid) myWorld.getGenerator().getAsteroids().get(j);
+						if(rock.getBounds().contains(item.getBounds())){
+							Gdx.app.log("Battery", "missile inside rock");
+							fitsonCollision = fits(item.getGap(),rock.getGap());
+							Gdx.app.log("Battery", "Fits on collision = " + fitsonCollision);
+							if(fitsonCollision){
+								rock.setHealth(-1);
+								item.setAlive(false);
+							}
+						}
+					}
+					
 
 				} else {// if missile is dead, removes it from array
 					liveMissiles.removeIndex(i);
@@ -85,7 +102,7 @@ public class Battery {
 		}else{
 			result = false;
 		}
-		Gdx.app.log("Battery", "Fits = " + result);
+		
 		return result;
 
 	}
@@ -105,6 +122,7 @@ public class Battery {
 		item.setAlive(true);
 		item.setVelocity(this.missileVelocity);
 		liveMissiles.add(item);
+		Gdx.app.log("Battery", "Fits at fire = " + fits);
 
 	}
 
