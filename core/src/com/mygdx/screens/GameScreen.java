@@ -47,7 +47,9 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		
 		world.update(delta);  //updates the game logic
-		renderer.render();	  // then renders the graphics
+		renderer.render();    // then renders the graphics
+		runTime += delta;
+
 	}
 
 	//following methods print to the console changes to the gamescreen, incuding
