@@ -18,7 +18,7 @@ public class SRGame extends Game {
 	public void create() {
 		game = new GameScreen();
 		Gdx.app.log("Slot Rocket" , "created");
-		setScreen(game);
+		this.setScreen(game);
 
 	}
 	

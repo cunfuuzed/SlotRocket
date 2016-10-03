@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.mygdx.gameworld.GameRenderer;
 import com.mygdx.gameworld.GameWorld;
 import com.mygdx.srHelpers.InputHandler;
+import com.mygdx.srHelpers.PauseHandler;
 import com.mygdx.srHelpers.UpperHandler;
 
 public class GameScreen implements Screen {
@@ -13,6 +14,22 @@ public class GameScreen implements Screen {
 	private GameRenderer renderer;
 	private float runTime = 0;
 	private GameWorld world;
+
+	public enum GameState {
+
+		READY, RUNNING, PAUSED, GAMEOVER
+
+	}
+
+	public GameState getCurrentState() {
+		return currentState;
+	}
+
+	public void setCurrentState(GameState currentState) {
+		this.currentState = currentState;
+	}
+
+	private GameState currentState;
 
 	public GameScreen() {
 		//gets device screen width
@@ -28,25 +45,41 @@ public class GameScreen implements Screen {
 
 		//creates a gameworld and render object, these are the two main objects that talk to
 		//each other to run the game logic (game obj) and render  the graphics (render obj)
-		world = new GameWorld(buttonWidth, screenWidth, screenHeight, rockWidth);
+		world = new GameWorld(buttonWidth, screenWidth, screenHeight, rockWidth, this);
 		renderer = new GameRenderer(world, screenWidth, screenHeight);
 
 		//creates an input multiplexer, allowing for two different input handlers,
-		//one for the upper screen where the asteroids are and one for controlling the blocks
+		//one for the upper screen where the asteroids are and one for; controlling the blocks
 		//on the bottom
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		multiplexer.addProcessor(new InputHandler(world));
 		multiplexer.addProcessor(new UpperHandler(world));
+		multiplexer.addProcessor(new PauseHandler(world));
 		
 		Gdx.input.setInputProcessor(multiplexer);
+
+		currentState = GameState.RUNNING;
 
 	}
 	
 	//this is called in the main thread of the game, calls game world update and then renders
 	@Override
 	public void render(float delta) {
+
+		switch (currentState){
+
+			case READY:
+				break;
+			case RUNNING:
+				world.update(delta);
+				break;
+			case PAUSED:
+				break;
+			case GAMEOVER:
+				break;
+		}
 		
-		world.update(delta);  //updates the game logic
+		  //updates the game logic
 		renderer.render();    // then renders the graphics
 		runTime += delta;
 
@@ -62,24 +95,28 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
+		currentState = GameState.RUNNING;
 		Gdx.app.log("GameScreen", "show called");
 
 	}
 
 	@Override
 	public void hide() {
+		currentState = GameState.PAUSED;
 		Gdx.app.log("GameScreen", "hide called");
 
 	}
 
 	@Override
 	public void pause() {
+		currentState = GameState.PAUSED;
 		Gdx.app.log("GameScreen", "pause called");
 
 	}
 
 	@Override
 	public void resume() {
+		currentState = GameState.READY;
 		Gdx.app.log("GameScreen", "resume called");
 
 	}

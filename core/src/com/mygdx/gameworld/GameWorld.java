@@ -1,6 +1,7 @@
 package com.mygdx.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.gameobjects.Asteroid;
@@ -8,6 +9,8 @@ import com.mygdx.gameobjects.Battery;
 import com.mygdx.gameobjects.Block;
 import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameobjects.Ground;
+import com.mygdx.gameobjects.PauseButton;
+import com.mygdx.screens.GameScreen;
 
 public class GameWorld {
 
@@ -20,17 +23,14 @@ public class GameWorld {
 	private Ground ground;
 	private float gapWidth;
 	private Battery battery;
+	private PauseButton pauseButton;
+	private GameScreen screen;
 
-	public enum GameState {
 
-		READY, RUNNING, GAMEOVER
-
-	}
-
-	private GameState currentState;
 	//passes in device dependent variables and creates game objects
 	public GameWorld(float buttonWidth, float screenWidth, float screenHeight,
-			float rockWidth) {
+			float rockWidth, GameScreen screen) {
+		this.screen = screen;
 		this.buttonWidth = buttonWidth;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
@@ -43,6 +43,8 @@ public class GameWorld {
 		this.generator = new Generator(this);
 		this.gapWidth = rockWidth/5;
 		this.battery = new Battery(this);
+		this.pauseButton = new PauseButton(new Rectangle(screenWidth - buttonWidth - 10, getGroundY() + 10, buttonWidth, buttonWidth),
+				screenWidth - buttonWidth, getGroundY() + buttonWidth,screen);
 		
 
 	}
@@ -88,4 +90,11 @@ public class GameWorld {
 		return gapWidth;
 	}
 
+	public PauseButton getPauseButton() {
+		return pauseButton;
+	}
+
+	public void setPauseButton(PauseButton pauseButton) {
+		this.pauseButton = pauseButton;
+	}
 }

@@ -13,6 +13,7 @@ import com.mygdx.gameobjects.Block;
 import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameobjects.Ground;
 import com.mygdx.gameobjects.Missile;
+import com.mygdx.gameobjects.PauseButton;
 
 public class GameRenderer {
 
@@ -29,6 +30,7 @@ public class GameRenderer {
 	private Ground ground;
 	private float gapWidth;
 	private float halfGap;
+	private PauseButton pauseButton;
 
 	public GameRenderer(GameWorld myWorld, float screenWidth, float screenHeight) {
 
@@ -37,6 +39,7 @@ public class GameRenderer {
 		this.myWorld = myWorld;
 		this.gapWidth = myWorld.getGapWidth();
 		this.halfGap = gapWidth / 2;
+		this.pauseButton = myWorld.getPauseButton();
 		cam = new OrthographicCamera();
 		cam.setToOrtho(true, screenWidth, screenHeight);
 
@@ -117,6 +120,11 @@ public class GameRenderer {
 		shapeRenderer.setColor(0, 0, 200, 1);
 		shapeRenderer.rect(ground.getBounds().x, ground.getBounds().y,
 				ground.getBounds().width, ground.getBounds().height);
+
+		shapeRenderer.rect(pauseButton.getBounds().x, pauseButton.getBounds().y,
+				pauseButton.getBounds().width, pauseButton.getBounds().height);
+
+
 		shapeRenderer.end();
 		//temporary outline render batch for bounding box outlines
 		shapeRenderer.begin(ShapeType.Line);
