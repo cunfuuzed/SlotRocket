@@ -1,130 +1,174 @@
 package com.mygdx.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.mygdx.gameworld.GameRenderer;
 import com.mygdx.gameworld.GameWorld;
+import com.mygdx.slotrocket.SRGame;
 import com.mygdx.srHelpers.InputHandler;
 import com.mygdx.srHelpers.PauseHandler;
+import com.mygdx.srHelpers.ScreenState;
 import com.mygdx.srHelpers.UpperHandler;
 
 public class GameScreen implements Screen {
 
-	private GameRenderer renderer;
-	private float runTime = 0;
-	private GameWorld world;
+    private GameRenderer renderer;
 
-	public enum GameState {
 
-		READY, RUNNING, PAUSED, GAMEOVER
 
-	}
+    private float runTime = 0;
+    private GameWorld world;
+    private SRGame myGame;
+    InputMultiplexer multiplexer;
+    private ScreenState state;
+    private Screen otherScreen;
 
-	public GameState getCurrentState() {
-		return currentState;
-	}
 
-	public void setCurrentState(GameState currentState) {
-		this.currentState = currentState;
-	}
 
-	private GameState currentState;
+    public enum GameState {
 
-	public GameScreen() {
-		//gets device screen width
-		float screenWidth = (float) Gdx.graphics.getWidth();
-		//gets device screen height
-		float screenHeight = (float) Gdx.graphics.getHeight();
-		//sets the lower screen buttons to a standard fraction of the screen
-		//so it's the same ratio on different size device screens
-		float buttonWidth = screenWidth / 9;
-		//sets the ratio of the size of the falling asteroids to the devices screen width
-		//so it's scaled to different size device screens
-		float rockWidth = screenWidth / 7;
+        READY, RUNNING, PAUSED, GAMEOVER
+    }
 
-		//creates a gameworld and render object, these are the two main objects that talk to
-		//each other to run the game logic (game obj) and render  the graphics (render obj)
-		world = new GameWorld(buttonWidth, screenWidth, screenHeight, rockWidth, this);
-		renderer = new GameRenderer(world, screenWidth, screenHeight);
+    public GameState getCurrentState() {
 
-		//creates an input multiplexer, allowing for two different input handlers,
-		//one for the upper screen where the asteroids are and one for; controlling the blocks
-		//on the bottom
-		InputMultiplexer multiplexer = new InputMultiplexer();
-		multiplexer.addProcessor(new InputHandler(world));
-		multiplexer.addProcessor(new UpperHandler(world));
-		multiplexer.addProcessor(new PauseHandler(world));
+        return currentState;
+    }
+
+    public void setCurrentState(GameState currentState) {
+        this.currentState = currentState;
+    }
+
+    public GameState currentState;
+
+    public GameScreen(SRGame myGame, Screen otherScreen) {
+        /*
+         * note, screen width and height can't be gotten before the screen object is initialized
+		 * so don't DRY it up past this point
+		 */
+        this.myGame = myGame;
+        float screenWidth = (float) Gdx.graphics.getWidth();
+        float screenHeight = (float) Gdx.graphics.getHeight();
+        //sets the lower screen buttons to a standard fraction of the screen
+        //so it's the same ratio on different size device screens
+        float buttonWidth = screenWidth / 9;
+        //sets the ratio of the size of the falling asteroids to the devices screen width
+        //so it's scaled to different size device screens
+        float rockWidth = screenWidth / 7;
+
+        //creates a gameworld and render object, these are the two main objects that talk to
+        //each other to run the game logic (game obj) and render  the graphics (render obj)
+        world = new GameWorld(buttonWidth, screenWidth, screenHeight, rockWidth, this);
+        renderer = new GameRenderer(world, screenWidth, screenHeight);
+        this.otherScreen = otherScreen;
+
+        //creates an input multiplexer, allowing for two different input handlers,
+        //one for the upper screen where the asteroids are and one for; controlling the blocks
+        //on the bottom
+        multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(new InputHandler(world));
+        multiplexer.addProcessor(new UpperHandler(world));
+        multiplexer.addProcessor(new PauseHandler(world));
+
+//        Gdx.input.setInputProcessor(multiplexer);
+
+        currentState = GameState.RUNNING;
+        state = ScreenState.RUNNING;
+
+    }
+
+
+    //this is called in the main thread of the game, calls game world update and then renders
+    @Override
+    public void render(float delta) {
+
+        switch (state) {
+
+            case READY:
+                break;
+            case RUNNING:
+                world.update(delta);
+                break;
+            case PAUSED:
+                break;
+            case GAMEOVER:
+                break;
+        }
 		
-		Gdx.input.setInputProcessor(multiplexer);
+		  /*
+		  update method calls are done in order, so the game world logic is updated,
+		  the the render method is called to render objects affected by logic
+		   */
+        renderer.render();
 
-		currentState = GameState.RUNNING;
+        runTime += delta;
 
-	}
-	
-	//this is called in the main thread of the game, calls game world update and then renders
-	@Override
-	public void render(float delta) {
+    }
 
-		switch (currentState){
+    //following methods print to the console changes to the gamescreen, incuding
+    //resizing, opening and closing
+    @Override
+    public void resize(int width, int height) {
+        Gdx.app.log("GameScreen", "resizing");
 
-			case READY:
-				break;
-			case RUNNING:
-				world.update(delta);
-				break;
-			case PAUSED:
-				break;
-			case GAMEOVER:
-				break;
-		}
-		
-		  //updates the game logic
-		renderer.render();    // then renders the graphics
-		runTime += delta;
+    }
 
-	}
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(this.multiplexer);
 
-	//following methods print to the console changes to the gamescreen, incuding
-	//resizing, opening and closing
-	@Override
-	public void resize(int width, int height) {
-		Gdx.app.log("GameScreen", "resizing");
+        state = ScreenState.RUNNING;
+        Gdx.app.log("GameScreen", "show called");
 
-	}
+    }
 
-	@Override
-	public void show() {
-		currentState = GameState.RUNNING;
-		Gdx.app.log("GameScreen", "show called");
+    @Override
+    public void hide() {
+        Gdx.input.setInputProcessor(null);
+        currentState = GameState.PAUSED;
+        Gdx.app.log("GameScreen", "hide called");
 
-	}
+    }
 
-	@Override
-	public void hide() {
-		currentState = GameState.PAUSED;
-		Gdx.app.log("GameScreen", "hide called");
+    @Override
+    public void pause() {
+        state = ScreenState.PAUSED;
+        Gdx.app.log("GameScreen", "pause called");
 
-	}
+    }
 
-	@Override
-	public void pause() {
-		currentState = GameState.PAUSED;
-		Gdx.app.log("GameScreen", "pause called");
+    @Override
+    public void resume() {
+        state = ScreenState.READY;
+        Gdx.app.log("GameScreen", "resume called");
 
-	}
+    }
 
-	@Override
-	public void resume() {
-		currentState = GameState.READY;
-		Gdx.app.log("GameScreen", "resume called");
+    @Override
+    public void dispose() {
+        // TODO Auto-generated method stub
 
-	}
+    }
 
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
+    public ScreenState getState() {
+        return state;
+    }
 
-	}
+    public void setState(ScreenState state) {
+        this.state = state;
+    }
 
+    public SRGame getMyGame() {
+        return myGame;
+    }
+
+    public Screen getOtherScreen() {
+        return otherScreen;
+    }
+
+    public void setOtherScreen(Screen otherScreen) {
+        this.otherScreen = otherScreen;
+    }
 }

@@ -7,18 +7,28 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.screens.GameScreen;
+import com.mygdx.screens.MenuScreen;
 import com.mygdx.srHelpers.AssetLoader;
 
 
 public class SRGame extends Game {
+
 	
 	GameScreen game;
+	MenuScreen menu;
 
+
+	public SRGame() {
+
+	}
 	@Override
 	public void create() {
-		game = new GameScreen();
+		game = new GameScreen(this, menu);
+		// menu screen intialized from PauseButton in GameWorld
+//		menu = new MenuScreen(this, game);
+
 		Gdx.app.log("Slot Rocket" , "created");
-		this.setScreen(game);
+		this.setScreen(menu);
 
 	}
 	
@@ -28,4 +38,26 @@ public class SRGame extends Game {
         AssetLoader.dispose();
     }
 
+	public GameScreen getGame() {
+		return game;
+	}
+
+	public void setGame(GameScreen game) {
+		this.game = game;
+	}
+
+	public MenuScreen getMenu() {
+
+		return menu;
+
+
+	}
+
+	public void setMenu(MenuScreen menu) {
+		this.menu = menu;
+	}
+
+	public void initMenu(){
+		this.menu = new MenuScreen(this, this.game);
+	}
 }

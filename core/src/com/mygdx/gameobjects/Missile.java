@@ -20,7 +20,7 @@ public class Missile implements Poolable {
 	public Missile(GameWorld world){
 		
 		//uses the gameWorld object as an argument to get the gap width to set the size of the missile
-		//so it all stays as a relative fraction of the devices game screen
+		//so it all stays as a relative fraction of the devices game gameScreen
 		gap = new int[4];
 		position = new Vector2();
 		velocity = new Vector2(0,-100);
@@ -101,7 +101,7 @@ public class Missile implements Poolable {
 					position.y);
 			
 		}
-			//kills missile when it goes off the top of the screen
+			//kills missile when it goes off the top of the gameScreen
 		if(position.y < - (4*gapWidth)){
 				isAlive = false;
 			}

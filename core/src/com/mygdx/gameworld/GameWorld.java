@@ -11,6 +11,7 @@ import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameobjects.Ground;
 import com.mygdx.gameobjects.PauseButton;
 import com.mygdx.screens.GameScreen;
+import com.mygdx.slotrocket.SRGame;
 
 public class GameWorld {
 
@@ -27,10 +28,12 @@ public class GameWorld {
 	private GameScreen screen;
 
 
+
 	//passes in device dependent variables and creates game objects
 	public GameWorld(float buttonWidth, float screenWidth, float screenHeight,
 			float rockWidth, GameScreen screen) {
 		this.screen = screen;
+
 		this.buttonWidth = buttonWidth;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;

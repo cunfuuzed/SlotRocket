@@ -19,6 +19,7 @@ public class ScoreKeeper {
 		damage = 0;
 		maxAsteroids = 0;
 		maxMissiles = 0;
+		this.world = world;
 		
 	}
 

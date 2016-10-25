@@ -4,25 +4,36 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.screens.GameScreen;
+import com.mygdx.screens.MenuScreen;
+import com.mygdx.slotrocket.SRGame;
 import com.mygdx.srHelpers.AbstractButton;
+import com.mygdx.srHelpers.ScreenState;
+
 /**
  * Pauses game as of 9/5/2016. may also bring up main menu/ in game menu when paused
  */
 public class PauseButton extends AbstractButton{
 
     boolean paused;
-    GameScreen screen;
+    GameScreen gameScreen;
+    MenuScreen menuScreen;
+    SRGame myGame;
     Vector2 position;
     Rectangle bounds;
 
 
 
-    public PauseButton(Rectangle bounds, float x, float y, GameScreen screen) {
+
+    public PauseButton(Rectangle bounds, float x, float y, GameScreen gameScreen) {
         this.bounds = bounds;
         position = new Vector2();
         position.x = x;
         position.y = y;
-        this.screen = screen;
+        this.gameScreen = gameScreen;
+        myGame = gameScreen.getMyGame();
+        myGame.initMenu();
+        menuScreen = myGame.getMenu();
+
         paused = false;
     }
 
@@ -32,13 +43,20 @@ public class PauseButton extends AbstractButton{
     @Override
     public boolean onPress() {
 
-        if(paused){
-            screen.setCurrentState(GameScreen.GameState.RUNNING);
-            Gdx.app.log("PauseButton", " screen.setCurrentState(GameScreen.GameState.RUNNING)");
+        Gdx.app.log("PauseButton", " clicked");
+
+        if(myGame.getScreen().equals(menuScreen)){
+//            gameScreen.setCurrentState(GameScreen.GameState.RUNNING);
+            myGame.setScreen(gameScreen);
+            gameScreen.setState(ScreenState.RUNNING);
+            Gdx.app.log("PauseButton", " gameScreen.setCurrentState(GameScreen.GameState.RUNNING)");
             paused = false;
         }else{
-            screen.setCurrentState(GameScreen.GameState.PAUSED);
-            Gdx.app.log("PauseButton", " screen.setCurrentState(GameScreen.GameState.PAUSED)");
+//            gameScreen.setCurrentState(GameScreen.GameState.PAUSED);
+            gameScreen.setState(ScreenState.PAUSED);
+            menuScreen.setState(ScreenState.RUNNING);
+            myGame.setScreen(menuScreen);
+            Gdx.app.log("PauseButton", " gameScreen.setCurrentState(GameScreen.GameState.PAUSED)");
             paused = true;
         }
 

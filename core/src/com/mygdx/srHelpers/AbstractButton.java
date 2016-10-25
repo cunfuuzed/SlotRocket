@@ -4,7 +4,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by User on 9/5/2016.
+ * generic button,
+ * A basic rectangle bounding box and a method for handling clicks/inputs
  */
 public abstract class AbstractButton {
 
