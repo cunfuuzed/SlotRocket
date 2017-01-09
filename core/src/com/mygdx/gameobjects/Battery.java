@@ -130,4 +130,9 @@ public class Battery {
 		return liveMissiles;
 	}
 
+	public void reset(){
+
+		liveMissiles.clear();
+	}
+
 }

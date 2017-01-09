@@ -46,6 +46,7 @@ public class Asteroid implements Poolable {
 	public void reset() {
 		position.y = -rockWidth - 2.0f;
 		velocity.y = 0;
+		health = 1;
 		isAlive = true;
 		bounds.set(position.x, position.y, rockWidth, rockWidth);
 

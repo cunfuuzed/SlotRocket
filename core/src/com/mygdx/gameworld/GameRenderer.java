@@ -10,10 +10,12 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.gameobjects.Asteroid;
 import com.mygdx.gameobjects.Battery;
 import com.mygdx.gameobjects.Block;
+import com.mygdx.gameobjects.GameOverButton;
 import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameobjects.Ground;
 import com.mygdx.gameobjects.Missile;
 import com.mygdx.gameobjects.PauseButton;
+import com.mygdx.srHelpers.ScreenState;
 
 public class GameRenderer {
 
@@ -31,6 +33,7 @@ public class GameRenderer {
 	private float gapWidth;
 	private float halfGap;
 	private PauseButton pauseButton;
+	private GameOverButton gameOverButton;
 
 	public GameRenderer(GameWorld myWorld, float screenWidth, float screenHeight) {
 
@@ -77,12 +80,15 @@ public class GameRenderer {
 
 		
 		// draw loop for asteroids
-		shapeRenderer.setColor(0, 200, 0, 1);
+//		shapeRenderer.setColor(0, 200, 0, 1);
 		if (asteroids.size > 0) {
 			for (int i = 0; i < asteroids.size; i++) {
 				Asteroid item = (Asteroid) asteroids.get(i);
-				shapeRenderer.rect(item.getBounds().x, item.getBounds().y,
-						myWorld.getRockWidth(), myWorld.getRockWidth());
+				if(item instanceof Asteroid) {
+					shapeRenderer.setColor(0, 200, 0, 1);
+					shapeRenderer.rect(item.getBounds().x, item.getBounds().y,
+							myWorld.getRockWidth(), myWorld.getRockWidth());
+				}
 			}
 		}
 
@@ -121,8 +127,21 @@ public class GameRenderer {
 		shapeRenderer.rect(ground.getBounds().x, ground.getBounds().y,
 				ground.getBounds().width, ground.getBounds().height);
 
+		//pause button
 		shapeRenderer.rect(pauseButton.getBounds().x, pauseButton.getBounds().y,
 				pauseButton.getBounds().width, pauseButton.getBounds().height);
+
+		/*
+		game over button, HAS to be at this end of the solid shape stack to render over
+		the asteroids
+		 */
+		if(myWorld.getScreen().getState() == ScreenState.GAMEOVER) {
+			shapeRenderer.setColor(157, 117, 55, 1);
+			shapeRenderer.rect(gameOverButton.getBounds().x, gameOverButton.getBounds().y,
+					gameOverButton.getBounds().width, gameOverButton.getBounds().height);
+		}
+
+
 
 
 		shapeRenderer.end();
@@ -149,6 +168,7 @@ public class GameRenderer {
 		ground = myWorld.getGround();
 		battery = myWorld.getBattery();
 		missiles = battery.getMissles();
+		gameOverButton = myWorld.getGameOverButton();
 
 	}
 

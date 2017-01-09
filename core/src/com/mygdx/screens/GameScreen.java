@@ -171,4 +171,8 @@ public class GameScreen implements Screen {
     public void setOtherScreen(Screen otherScreen) {
         this.otherScreen = otherScreen;
     }
+
+    public GameWorld getWorld() {
+        return world;
+    }
 }

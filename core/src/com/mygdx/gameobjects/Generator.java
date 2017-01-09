@@ -2,11 +2,10 @@ package com.mygdx.gameobjects;
 
 import java.util.Random;
 
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.gameworld.GameWorld;
+import com.mygdx.gameworld.ScoreKeeper;
 
 public class Generator {
 
@@ -19,6 +18,7 @@ public class Generator {
 	private Random randomizer;
 	private float runTime = 0.0f;
 	private float releaseTime = 0.0f;
+	private ScoreKeeper scoreKeeper;
 	
 
 	private final Array<Asteroid> liveAsteroids = new Array<Asteroid>(false, 16);
@@ -30,6 +30,14 @@ public class Generator {
 		}
 	};
 
+	private final Pool<BombAsteroid> bombPool = new Pool<BombAsteroid>(36) {
+		@Override
+		protected BombAsteroid newObject() { return new BombAsteroid(rockWidth);
+		}
+	};
+
+
+
 	public Generator(GameWorld world) {
 
 		this.spawnInterval = 2.0f;
@@ -39,6 +47,10 @@ public class Generator {
 		this.rockWidth = world.getRockWidth();
 		this.screenWidth = world.getScreenWidth();
 		this.fallSpeed = myWorld.getGround().getBounds().y / 6;
+		this.scoreKeeper = myWorld.getScreen().getMyGame().getScoreKeeper();
+
+
+
 		
 	}
 
@@ -52,6 +64,7 @@ public class Generator {
 				//checks if the asteroid hits the ground and kills it if it does
 				if (item.getBounds().overlaps(myWorld.getGround().getBounds())) {
 					item.setHealth(0);
+					scoreKeeper.doDamage();
 				}
 				if (item.isAlive()) {
 					item.update(delta);
@@ -70,17 +83,17 @@ public class Generator {
 		}
 
 		if (runTime >= releaseTime) {
-			spawn();
+			spawnBasic();
 		}
 
 	}
 
-	private void spawn() {
-		// temporary basic set-up , no randomized Asteroid types or health
+	private void spawnBasic() {
+		// spawn method specifc to the basic Asteroid type
 		Asteroid item = asteroidPool.obtain(); //init method Asteroid object from pool in this class
 		item.setHealth(1);
 		item.setType(1);
-		if (liveAsteroids.size < 1) { //spawn asteroid with no overlap check if it's the first one generated
+		if (liveAsteroids.size < 1) { //spawnBasic asteroid with no overlap check if it's the first one generated
 			float x = (screenWidth - rockWidth) * randomizer.nextFloat();
 			item.setPosition(x, -rockWidth - 2.0f);
 			
@@ -111,8 +124,52 @@ public class Generator {
 
 	}
 
+	private void spawnBomb() {
+		// spawn method specifc to the BombAsteroid type
+		BombAsteroid item = bombPool.obtain();
+		item.setHealth(1);
+		item.setType(1);
+		item.setRadius(rockWidth * 2.0f);
+		if (liveAsteroids.size < 1) {
+			float x = (screenWidth - rockWidth) * randomizer.nextFloat();
+			item.setPosition(x, -rockWidth - 2.0f);
+
+		} else {// overlap checking
+			boolean overlap;
+			do {
+				overlap = false;
+				float x = (screenWidth - rockWidth) * randomizer.nextFloat();
+				item.setPosition(x, -rockWidth - 2.0f);
+				for (int i = 0; i < liveAsteroids.size; i++) {
+					if (liveAsteroids.get(i).getBounds()
+							.overlaps(item.getBounds())) {
+						overlap = true;
+					}
+				}
+			} while (overlap);
+
+		}
+		for( int i = 0; i < item.getGap().length; i++){
+			item.getGap()[i] = randomizer.nextInt(5);
+		}
+
+
+		item.setVelocity(fallSpeed);
+		liveAsteroids.add(item);
+
+		releaseTime += spawnInterval * randomizer.nextFloat();
+
+	}
+
 	public Array<Asteroid> getAsteroids() {
 		return liveAsteroids;
+	}
+
+	public void reset(){
+
+		liveAsteroids.clear();
+		runTime = 0.0f;
+		releaseTime = 0.0f;
 	}
 
 }

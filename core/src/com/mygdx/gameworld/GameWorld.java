@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.mygdx.gameobjects.Asteroid;
 import com.mygdx.gameobjects.Battery;
 import com.mygdx.gameobjects.Block;
+import com.mygdx.gameobjects.GameOverButton;
 import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameobjects.Ground;
 import com.mygdx.gameobjects.PauseButton;
@@ -26,6 +27,7 @@ public class GameWorld {
 	private Battery battery;
 	private PauseButton pauseButton;
 	private GameScreen screen;
+	private GameOverButton gameOverButton;
 
 
 
@@ -46,8 +48,11 @@ public class GameWorld {
 		this.generator = new Generator(this);
 		this.gapWidth = rockWidth/5;
 		this.battery = new Battery(this);
-		this.pauseButton = new PauseButton(new Rectangle(screenWidth - buttonWidth - 10, getGroundY() + 10, buttonWidth, buttonWidth),
+		this.pauseButton = new PauseButton(new Rectangle(screenWidth - buttonWidth - 10,
+				getGroundY() + 10, buttonWidth, buttonWidth),
 				screenWidth - buttonWidth, getGroundY() + buttonWidth,screen);
+		this.gameOverButton = new GameOverButton(new Rectangle(rockWidth, 4 * rockWidth,
+				5 * rockWidth, rockWidth), this.screen);
 		
 
 	}
@@ -99,5 +104,20 @@ public class GameWorld {
 
 	public void setPauseButton(PauseButton pauseButton) {
 		this.pauseButton = pauseButton;
+	}
+
+	public GameScreen getScreen() {
+		return screen;
+	}
+
+	public GameOverButton getGameOverButton() {
+		return gameOverButton;
+	}
+
+	public void reset (){
+
+		generator.reset();
+		launcher.reset();
+		battery.reset();
 	}
 }

@@ -95,5 +95,16 @@ public class Block {
 		return buttons;
 	}
 
+	public void reset(){
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				cells[i][j] = true;
+			}
+		}
+
+
+	}
+
 
 }

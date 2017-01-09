@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.gameobjects.Asteroid;
 import com.mygdx.gameobjects.Battery;
 import com.mygdx.gameobjects.Block;
+import com.mygdx.gameobjects.GameOverButton;
 import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameworld.GameWorld;
 
@@ -15,6 +16,7 @@ public class UpperHandler implements InputProcessor{
 	private Generator generator;
 	private Array<Asteroid> asteroids;
 	private Battery battery;
+	private GameOverButton gameOverButton;
 	
 	
 	public UpperHandler(GameWorld world){
@@ -24,6 +26,7 @@ public class UpperHandler implements InputProcessor{
 		this.generator = world.getGenerator();
 		this.asteroids = generator.getAsteroids();
 		this.battery = world.getBattery();
+		this.gameOverButton = world.getGameOverButton();
 		
 	}
 
@@ -47,15 +50,23 @@ public class UpperHandler implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		for(int i = 0; i < asteroids.size; i++){
-			Asteroid item = (Asteroid) asteroids.get(i);
-			if(item.getBounds().contains(screenX, screenY)){
-				battery.fire(i);
-				launcher.resetCells();
+
+		if(world.getScreen().getState() == ScreenState.RUNNING) {
+			for (int i = 0; i < asteroids.size; i++) {
+				Asteroid item = (Asteroid) asteroids.get(i);
+				if (item.getBounds().contains(screenX, screenY)) {
+					battery.fire(i);
+					launcher.resetCells();
+				}
+			}
+		}else if (world.getScreen().getState() == ScreenState.GAMEOVER){
+			if(gameOverButton.getBounds().contains(screenX,screenY)){
+				gameOverButton.onPress();
 			}
 		}
 		return false;
 	}
+
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {

@@ -14,12 +14,12 @@ import com.mygdx.srHelpers.ScreenState;
  */
 public class PauseButton extends AbstractButton{
 
-    boolean paused;
-    GameScreen gameScreen;
-    MenuScreen menuScreen;
-    SRGame myGame;
-    Vector2 position;
-    Rectangle bounds;
+    private boolean paused;
+    private GameScreen gameScreen;
+    private MenuScreen menuScreen;
+    private SRGame myGame;
+    private Vector2 position;
+     private Rectangle bounds;
 
 
 
