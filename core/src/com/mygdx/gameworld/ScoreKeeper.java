@@ -126,7 +126,7 @@ public class ScoreKeeper {
     }
 
     public void doDamage(){
-        this.currentDamage += 1;
+//        this.currentDamage += 1;
 //        Gdx.app.log("scoreKeeper" , "health = " + (maxHealth - currentDamage));
         if(currentDamage >= maxHealth){
             world.getScreen().setState(ScreenState.GAMEOVER);

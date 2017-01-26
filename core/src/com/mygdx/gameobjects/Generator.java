@@ -24,14 +24,14 @@ public class Generator {
 
     private final Array<Asteroid> liveAsteroids = new Array<Asteroid>(false, 16);
 
-    private final Pool<Asteroid> asteroidPool = new Pool<Asteroid>(36) {
+    private final Pool<Asteroid> asteroidPool = new Pool(36) {
         @Override
         protected Asteroid newObject() {
             return new Asteroid(rockWidth);
         }
     };
 
-    private final Pool<BombAsteroid> bombPool = new Pool<BombAsteroid>(36) {
+    private final Pool<BombAsteroid> bombPool = new Pool(36) {
         @Override
         protected BombAsteroid newObject() { return new BombAsteroid(rockWidth);
         }
@@ -67,13 +67,18 @@ public class Generator {
                 if (item.getBounds().overlaps(myWorld.getGround().getBounds())) {
                     item.setHealth(0);
                     scoreKeeper.doDamage();
+                    Gdx.app.log("Generator", item.getClass().toString());
                 }
                 if (item.isAlive()) {
                     item.update(delta);
 
                 }else {
                     liveAsteroids.removeIndex(i);
-                    asteroidPool.free(item);
+                    if (item.getClass() == Asteroid.class) {
+                        asteroidPool.free(item);
+                    }else{
+                        bombPool.free((BombAsteroid)item);
+                    }
                 }
             }
         }
@@ -85,6 +90,7 @@ public class Generator {
         }
 
         if (runTime >= releaseTime) {
+
             if(randomizer.nextFloat() > 0.5f) {
                 spawnBasic();
             }else{
@@ -127,8 +133,8 @@ public class Generator {
         liveAsteroids.add(item);
 
         releaseTime += spawnInterval * randomizer.nextFloat();
-        Gdx.app.log("Generator" , item.getClass().getCanonicalName());
-        Gdx.app.log("Generator" , String.valueOf(item.specialAction()));
+//        Gdx.app.log("Generator" , item.getClass().getCanonicalName());
+//        Gdx.app.log("Generator" , String.valueOf(item.specialAction()));
 }
 
     private void spawnBomb() {
@@ -165,8 +171,8 @@ public class Generator {
         liveAsteroids.add(item);
 
         releaseTime += spawnInterval * randomizer.nextFloat();
-        Gdx.app.log("Generator" , item.getClass().getCanonicalName());
-        Gdx.app.log("Generator" , String.valueOf(item.specialAction()));
+//        Gdx.app.log("Generator" , item.getClass().getCanonicalName());
+//        Gdx.app.log("Generator" , String.valueOf(item.specialAction()));
     }
 
     public Array<Asteroid> getAsteroids() {
