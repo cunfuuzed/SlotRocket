@@ -1,72 +1,91 @@
 package com.mygdx.slotrocket;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.gameworld.ScoreKeeper;
 import com.mygdx.screens.GameScreen;
+import com.mygdx.screens.LoadScreen;
 import com.mygdx.screens.MenuScreen;
 import com.mygdx.srHelpers.AssetLoader;
 
 
 public class SRGame extends Game {
 
-	
-	GameScreen game;
-	MenuScreen menu;
-	ScoreKeeper scoreKeeper;
+
+    private GameScreen gameScreen;
+    private MenuScreen menuScreen;
+    private ScoreKeeper scoreKeeper;
+    private LoadScreen loadScreen;
+    private AssetManager manager;
 
 
-	public SRGame() {
+    public SRGame() {
 
-	}
-	@Override
-	public void create() {
-		scoreKeeper = new ScoreKeeper(this);
-		game = new GameScreen(this, menu);
-		// menu screen intialized from PauseButton in GameWorld
-//		menu = new MenuScreen(this, game);
-		scoreKeeper.initWorld();
+    }
+
+    @Override
+    public void create() {
+
+        manager = new AssetManager();
+        scoreKeeper = new ScoreKeeper(this);
+        loadScreen = new LoadScreen(this);
+        gameScreen = new GameScreen(this, menuScreen);
+        // menuScreen screen intialized from PauseButton in GameWorld
+//		menuScreen = new MenuScreen(this, gameScreen);
+        scoreKeeper.initWorld();
+        this.setScreen(loadScreen);
 
 
-		Gdx.app.log("Slot Rocket" , "created");
-		this.setScreen(menu);
+        Gdx.app.log("Slot Rocket", "created");
 
-	}
-	
-	@Override
+
+    }
+
+    @Override
     public void dispose() {
         super.dispose();
         AssetLoader.dispose();
+        manager.clear();
     }
 
-	public GameScreen getGame() {
-		return game;
-	}
+    public GameScreen getGameScreen() {
+        return gameScreen;
+    }
 
-	public void setGame(GameScreen game) {
-		this.game = game;
-	}
+    public void setGameScreen() {
+        this.setScreen(gameScreen);
+    }
 
-	public MenuScreen getMenu() {
+    public MenuScreen getMenuScreen() {
 
-		return menu;
+        return menuScreen;
 
 
-	}
+    }
 
-	public void setMenu(MenuScreen menu) {
-		this.menu = menu;
-	}
+    public void setMenuScreen() {
+        this.setScreen(menuScreen);
+    }
 
-	public void initMenu(){
-		this.menu = new MenuScreen(this, this.game);
-	}
+    public AssetManager getManager() {
+        return manager;
+    }
 
-	public ScoreKeeper getScoreKeeper() {
-		return scoreKeeper;
-	}
+    public LoadScreen getLoadScreen() {
+        return loadScreen;
+    }
+
+    public void setLoadScreen() {
+        this.setScreen(loadScreen);
+    }
+
+    public void initMenu() {
+        this.menuScreen = new MenuScreen(this, this.gameScreen);
+    }
+
+    public ScoreKeeper getScoreKeeper() {
+        return scoreKeeper;
+    }
 }

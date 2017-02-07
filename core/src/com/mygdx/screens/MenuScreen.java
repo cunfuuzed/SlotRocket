@@ -24,16 +24,14 @@ public class MenuScreen implements Screen {
     private Screen otherScreen;
 
 
-
-
     public MenuScreen(SRGame myGame, Screen otherScreen) {
         float screenWidth = (float) Gdx.graphics.getWidth();
         float screenHeight = (float) Gdx.graphics.getHeight();
         this.myGame = myGame;
         world = new MenuWorld(this, screenWidth, screenHeight);
-        renderer = new MenuRenderer(world, screenWidth, screenHeight);
+        renderer = new MenuRenderer(world, screenWidth, screenHeight, this);
 
-        if(myGame != null) {
+        if (myGame != null) {
             Gdx.app.log("MenuScreen", "myGame is  not null");
         }
         multiplexer = new InputMultiplexer();
@@ -74,7 +72,6 @@ public class MenuScreen implements Screen {
         renderer.render();
 
 
-
     }
 
     @Override
@@ -111,5 +108,9 @@ public class MenuScreen implements Screen {
 
     public void setState(ScreenState state) {
         this.state = state;
+    }
+
+    public void initTextures() {
+
     }
 }

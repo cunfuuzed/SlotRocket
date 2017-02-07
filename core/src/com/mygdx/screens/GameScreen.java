@@ -4,6 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.gameworld.GameRenderer;
 import com.mygdx.gameworld.GameWorld;
 import com.mygdx.slotrocket.SRGame;
@@ -17,14 +20,15 @@ public class GameScreen implements Screen {
     private GameRenderer renderer;
 
 
-
     private float runTime = 0;
     private GameWorld world;
     private SRGame myGame;
     InputMultiplexer multiplexer;
     private ScreenState state;
     private Screen otherScreen;
-
+    private Texture explosion;
+    private FPSLogger logger;
+    private TextureRegion[] explosionFrames;
 
 
     public enum GameState {
@@ -46,8 +50,8 @@ public class GameScreen implements Screen {
     public GameScreen(SRGame myGame, Screen otherScreen) {
         /*
          * note, screen width and height can't be gotten before the screen object is initialized
-		 * so don't DRY it up past this point
-		 */
+         * so don't DRY it up past this point
+         */
         this.myGame = myGame;
         float screenWidth = (float) Gdx.graphics.getWidth();
         float screenHeight = (float) Gdx.graphics.getHeight();
@@ -61,7 +65,7 @@ public class GameScreen implements Screen {
         //creates a gameworld and render object, these are the two main objects that talk to
         //each other to run the game logic (game obj) and render  the graphics (render obj)
         world = new GameWorld(buttonWidth, screenWidth, screenHeight, rockWidth, this);
-        renderer = new GameRenderer(world, screenWidth, screenHeight);
+        renderer = new GameRenderer(world, screenWidth, screenHeight, this);
         this.otherScreen = otherScreen;
 
         //creates an input multiplexer, allowing for two different input handlers,
@@ -72,10 +76,13 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new UpperHandler(world));
         multiplexer.addProcessor(new PauseHandler(world));
 
+
 //        Gdx.input.setInputProcessor(multiplexer);
 
         currentState = GameState.RUNNING;
         state = ScreenState.RUNNING;
+        logger = new FPSLogger();
+
 
     }
 
@@ -96,13 +103,13 @@ public class GameScreen implements Screen {
             case GAMEOVER:
                 break;
         }
-		
-		  /*
-		  update method calls are done in order, so the game world logic is updated,
-		  the the render method is called to render objects affected by logic
-		   */
-        renderer.render();
 
+          /*
+          update method calls are done in order, so the game world logic is updated,
+          the the render method is called to render objects affected by logic
+           */
+        renderer.render(delta);
+        logger.log();
         runTime += delta;
 
     }
@@ -121,6 +128,7 @@ public class GameScreen implements Screen {
 
         state = ScreenState.RUNNING;
         Gdx.app.log("GameScreen", "show called");
+
 
     }
 
@@ -148,7 +156,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
+        renderer.dispose();
 
     }
 
@@ -174,5 +182,39 @@ public class GameScreen implements Screen {
 
     public GameWorld getWorld() {
         return world;
+    }
+
+    public Texture getExplosion() {
+        return explosion;
+    }
+
+    public void initTexures() {
+        explosion = myGame.getManager().get("data/explosion_W_alpha.png", Texture.class);
+    }
+
+    public void makeFrames() {
+
+
+        int columns = 5;
+        int rows = 2;
+        TextureRegion[][] exlpoTmp = TextureRegion.split(explosion,
+                102, 100);
+        explosionFrames = new TextureRegion[10];
+        int index = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                explosionFrames[index++] = exlpoTmp[i][j];
+            }
+        }
+
+
+    }
+
+    public TextureRegion[] getExplosionFrames() {
+        return explosionFrames;
+    }
+
+    public GameRenderer getRenderer() {
+        return renderer;
     }
 }

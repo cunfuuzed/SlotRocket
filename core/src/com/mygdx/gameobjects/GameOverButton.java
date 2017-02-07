@@ -1,9 +1,7 @@
 package com.mygdx.gameobjects;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.gameworld.GameWorld;
 import com.mygdx.screens.GameScreen;
 import com.mygdx.screens.MenuScreen;
 import com.mygdx.slotrocket.SRGame;
@@ -30,7 +28,7 @@ public class GameOverButton extends AbstractButton {
         this.position = new Vector2(bounds.getX(), bounds.getY());
         this.gameScreen = gameScreen;
         this.myGame = gameScreen.getMyGame();
-        this.menuScreen = myGame.getMenu();
+        this.menuScreen = myGame.getMenuScreen();
 
         clicked = false;
     }

@@ -32,7 +32,7 @@ public class PauseButton extends AbstractButton{
         this.gameScreen = gameScreen;
         myGame = gameScreen.getMyGame();
         myGame.initMenu();
-        menuScreen = myGame.getMenu();
+        menuScreen = myGame.getMenuScreen();
 
         paused = false;
     }

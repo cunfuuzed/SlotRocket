@@ -2,7 +2,7 @@ package com.mygdx.gameobjects;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.mygdx.gameworld.GameWorld;
@@ -20,9 +20,29 @@ public class Generator {
     private float runTime = 0.0f;
     private float releaseTime = 0.0f;
     private ScoreKeeper scoreKeeper;
+    private Vector2 burstPos;
 
 
     private final Array<Asteroid> liveAsteroids = new Array<Asteroid>(false, 16);
+
+    private final Array<Vector2> bursts = new Array<Vector2>(false, 4);
+
+    private final Array<Explosion> explosions = new Array<Explosion>(false, 10);
+
+    private final Pool<Explosion> explosionPool = new Pool(10) {
+
+        @Override
+        protected Object newObject() {
+            return new Explosion(0.03f, myWorld.getScreen().getExplosionFrames());
+        }
+    };
+
+    private final Pool<Vector2> burstPool = new Pool(10) {
+        @Override
+        protected Object newObject() {
+            return new Vector2();
+        }
+    };
 
     private final Pool<Asteroid> asteroidPool = new Pool(36) {
         @Override
@@ -33,10 +53,10 @@ public class Generator {
 
     private final Pool<BombAsteroid> bombPool = new Pool(36) {
         @Override
-        protected BombAsteroid newObject() { return new BombAsteroid(rockWidth);
+        protected BombAsteroid newObject() {
+            return new BombAsteroid(rockWidth);
         }
     };
-
 
 
     public Generator(GameWorld world) {
@@ -47,11 +67,10 @@ public class Generator {
         this.myWorld = world;
         this.rockWidth = world.getRockWidth();
         this.screenWidth = world.getScreenWidth();
+        this.burstPos = new Vector2();
 //        this.fallSpeed = myWorld.getGround().getBounds().y / 6;
         this.scoreKeeper = myWorld.getScreen().getMyGame().getScoreKeeper();
 //        this.fallSpeed = scoreKeeper.getCurrentlevel().getFallSpeed();
-
-
 
 
     }
@@ -67,18 +86,25 @@ public class Generator {
                 if (item.getBounds().overlaps(myWorld.getGround().getBounds())) {
                     item.setHealth(0);
                     scoreKeeper.doDamage();
-                    Gdx.app.log("Generator", item.getClass().toString());
+//                    Gdx.app.log("Generator", item.getClass().toString());
                 }
                 if (item.isAlive()) {
                     item.update(delta);
 
-                }else {
+                } else {
+
+/*                  deprecated
+*                   add a vector showing where an explosion should take place
+                   Vector2 burst = burstPool.obtain(); */
+//                  creates explosion object
+                    item.getBounds().getCenter(burstPos);
+                    Explosion blast = explosionPool.obtain();
+                    blast.setPosition(burstPos);
+                    explosions.add(blast);
+                    // remove destroyed asteroid from live array
                     liveAsteroids.removeIndex(i);
-                    if (item.getClass() == Asteroid.class) {
-                        asteroidPool.free(item);
-                    }else{
-                        bombPool.free((BombAsteroid)item);
-                    }
+                    // returns asteroid to it's respective pool type
+                    freeAsteroids(item);
                 }
             }
         }
@@ -91,9 +117,9 @@ public class Generator {
 
         if (runTime >= releaseTime) {
 
-            if(randomizer.nextFloat() > 0.5f) {
+            if (randomizer.nextFloat() > 0.5f) {
                 spawnBasic();
-            }else{
+            } else {
                 spawnBomb();
             }
         }
@@ -124,7 +150,7 @@ public class Generator {
             } while (overlap);
 
         }
-        for( int i = 0; i < item.getGap().length; i++){
+        for (int i = 0; i < item.getGap().length; i++) {
             item.getGap()[i] = randomizer.nextInt(5);
         }
 
@@ -135,7 +161,7 @@ public class Generator {
         releaseTime += spawnInterval * randomizer.nextFloat();
 //        Gdx.app.log("Generator" , item.getClass().getCanonicalName());
 //        Gdx.app.log("Generator" , String.valueOf(item.specialAction()));
-}
+    }
 
     private void spawnBomb() {
         // spawn method specifc to the BombAsteroid type
@@ -162,7 +188,7 @@ public class Generator {
             } while (overlap);
 
         }
-        for( int i = 0; i < item.getGap().length; i++){
+        for (int i = 0; i < item.getGap().length; i++) {
             item.getGap()[i] = randomizer.nextInt(5);
         }
 
@@ -175,19 +201,39 @@ public class Generator {
 //        Gdx.app.log("Generator" , String.valueOf(item.specialAction()));
     }
 
+    private void freeAsteroids(Asteroid item) {
+        if (item.getClass() == Asteroid.class) {
+            asteroidPool.free(item);
+        } else {
+            bombPool.free((BombAsteroid) item);
+        }
+    }
+
     public Array<Asteroid> getAsteroids() {
         return liveAsteroids;
     }
 
-    public void reset(){
+    public void reset() {
 
         liveAsteroids.clear();
         runTime = 0.0f;
         releaseTime = 0.0f;
     }
 
-    public float makeFallSpeed(){
+    public float makeFallSpeed() {
         return scoreKeeper.getCurrentlevel().getFallSpeed();
+    }
+
+    public Array<Vector2> getBursts() {
+        return bursts;
+    }
+
+    public Array<Explosion> getExplosions() {
+        return explosions;
+    }
+
+    public void explosionDone(Explosion burst) {
+        explosionPool.free(burst);
     }
 
 }

@@ -1,11 +1,13 @@
 package com.mygdx.menuworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.menuobjects.StartGameButton;
+import com.mygdx.screens.MenuScreen;
 
 /**
  * Created by User on 8/22/2016.
@@ -18,9 +20,11 @@ public class MenuRenderer {
     private float screenWidth, screenHeight;
     private SpriteBatch batcher;
     private StartGameButton startButton;
+    private MenuScreen menuScreen;
 
-    public MenuRenderer(MenuWorld myWorld, float screenWidth, float screenHeight) {
-
+    public MenuRenderer(MenuWorld myWorld, float screenWidth, float screenHeight,
+                        MenuScreen menuScreen) {
+        this.menuScreen = menuScreen;
         this.myWorld = myWorld;
         this.screenHeight = screenHeight;
         this.screenWidth = screenWidth;

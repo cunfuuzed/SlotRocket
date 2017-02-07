@@ -53,27 +53,27 @@ public class Battery {
 
     public void update(float delta) {
         // updates live missiles, deletes destroyed ones
-        Missile item;
+        Missile missile;
         boolean fitsonCollision = false;
         if (liveMissiles.size > 0) {
             for (int i = 0; i < liveMissiles.size; i++) {
-                item = (Missile) liveMissiles.get(i);
+                missile = (Missile) liveMissiles.get(i);
 
-                if (item.isAlive()) {
-                    item.update(delta);
+                if (missile.isAlive()) {
+                    missile.update(delta);
 
                     // check loop missile fitting gap on asteroid collision
                     for(int j = 0; j < myWorld.getGenerator().getAsteroids().size; j++){
                         fitsonCollision = false;
                         Asteroid rock = (Asteroid) myWorld.getGenerator().getAsteroids().get(j);
-                        if(rock.getBounds().contains(item.getBounds())){
+                        if(rock.getBounds().contains(missile.getBounds())){
                             Gdx.app.log("Battery", "missile inside rock");
-                            fitsonCollision = fits(item.getGap(),rock.getGap());
+                            fitsonCollision = fits(missile.getGap(),rock.getGap());
                             Gdx.app.log("Battery", "Fits on collision = " + fitsonCollision);
                             if(fitsonCollision){
                                 actionOnHit(rock);
                                 rock.setHealth(-1);
-                                item.setAlive(false);
+                                missile.setAlive(false);
                             }
                         }
                     }
@@ -81,7 +81,7 @@ public class Battery {
 
                 } else {// if missile is dead, removes it from array
                     liveMissiles.removeIndex(i);
-                    missilePool.free(item);
+                    missilePool.free(missile);
                 }
             }
         }

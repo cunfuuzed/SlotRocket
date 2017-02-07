@@ -1,10 +1,8 @@
 package com.mygdx.menuobjects;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.screens.GameScreen;
 import com.mygdx.screens.MenuScreen;
 import com.mygdx.slotrocket.SRGame;
 import com.mygdx.srHelpers.AbstractButton;
@@ -45,7 +43,7 @@ public class StartGameButton extends AbstractButton {
     public boolean onPress() {
 
         if(screen.getState() == ScreenState.RUNNING){
-            myGame.setScreen(myGame.getGame());
+            myGame.setScreen(myGame.getGameScreen());
             Gdx.app.log("StartGameButton", "button pressed");
 
 

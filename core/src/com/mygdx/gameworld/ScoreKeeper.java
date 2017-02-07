@@ -1,8 +1,5 @@
 package com.mygdx.gameworld;
 
-import com.badlogic.gdx.Gdx;
-import com.mygdx.gameobjects.Asteroid;
-import com.mygdx.gameobjects.BombAsteroid;
 import com.mygdx.slotrocket.SRGame;
 import com.mygdx.srHelpers.LevelsContainer;
 import com.mygdx.srHelpers.ScreenState;
@@ -122,7 +119,7 @@ public class ScoreKeeper {
     }
 
     public void initWorld(){
-        this.world = myGame.getGame().getWorld();
+        this.world = myGame.getGameScreen().getWorld();
     }
 
     public void doDamage(){

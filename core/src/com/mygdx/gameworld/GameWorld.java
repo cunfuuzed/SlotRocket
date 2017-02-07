@@ -1,6 +1,7 @@
 package com.mygdx.gameworld;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
@@ -16,108 +17,110 @@ import com.mygdx.slotrocket.SRGame;
 
 public class GameWorld {
 
-	private Block launcher;
-	private float buttonWidth;
-	private float screenWidth;
-	private float screenHeight;
-	private float rockWidth;
-	private Generator generator;
-	private Ground ground;
-	private float gapWidth;
-	private Battery battery;
-	private PauseButton pauseButton;
-	private GameScreen screen;
-	private GameOverButton gameOverButton;
+    private Block launcher;
+    private float buttonWidth;
+    private float screenWidth;
+    private float screenHeight;
+    private float rockWidth;
+    private Generator generator;
+    private Ground ground;
+    private float gapWidth;
+    private Battery battery;
+    private PauseButton pauseButton;
+    private GameScreen screen;
+    private GameOverButton gameOverButton;
 
 
 
-	//passes in device dependent variables and creates game objects
-	public GameWorld(float buttonWidth, float screenWidth, float screenHeight,
-			float rockWidth, GameScreen screen) {
-		this.screen = screen;
+    //passes in device dependent variables and creates game objects
+    public GameWorld(float buttonWidth, float screenWidth, float screenHeight,
+            float rockWidth, GameScreen screen) {
+        this.screen = screen;
 
-		this.buttonWidth = buttonWidth;
-		this.screenWidth = screenWidth;
-		this.screenHeight = screenHeight;
-		this.rockWidth = rockWidth;
-		this.launcher = new Block(screenWidth / 2 - (2 * buttonWidth),
-				screenHeight - 4 * buttonWidth - buttonWidth / 2, buttonWidth,
-				4, 4);
-		this.ground = new Ground(0, launcher.getCoordY() - buttonWidth / 2,
-				screenWidth, buttonWidth / 4);
-		this.generator = new Generator(this);
-		this.gapWidth = rockWidth/5;
-		this.battery = new Battery(this);
-		this.pauseButton = new PauseButton(new Rectangle(screenWidth - buttonWidth - 10,
-				getGroundY() + 10, buttonWidth, buttonWidth),
-				screenWidth - buttonWidth, getGroundY() + buttonWidth,screen);
-		this.gameOverButton = new GameOverButton(new Rectangle(rockWidth, 4 * rockWidth,
-				5 * rockWidth, rockWidth), this.screen);
-		
+        this.buttonWidth = buttonWidth;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
+        this.rockWidth = rockWidth;
+        this.launcher = new Block(screenWidth / 2 - (2 * buttonWidth),
+                screenHeight - 4 * buttonWidth - buttonWidth / 2, buttonWidth,
+                4, 4);
+        this.ground = new Ground(0, launcher.getCoordY() - buttonWidth / 2,
+                screenWidth, buttonWidth / 4);
+        this.generator = new Generator(this);
+        this.gapWidth = rockWidth/5;
+        this.battery = new Battery(this);
+        this.pauseButton = new PauseButton(new Rectangle(screenWidth - buttonWidth - 10,
+                getGroundY() + 10, buttonWidth, buttonWidth),
+                screenWidth - buttonWidth, getGroundY() + buttonWidth,screen);
+        this.gameOverButton = new GameOverButton(new Rectangle(rockWidth, 4 * rockWidth,
+                5 * rockWidth, rockWidth), this.screen);
 
-	}
 
-	public Battery getBattery() {
-		return battery;
-	}
+    }
 
-	public float getButtonWidth() {
-		return buttonWidth;
-	}
+    public Battery getBattery() {
+        return battery;
+    }
 
-	public Block getLauncher() {
-		return launcher;
-	}
+    public float getButtonWidth() {
+        return buttonWidth;
+    }
 
-	public Generator getGenerator() {
-		return this.generator;
-	}
+    public Block getLauncher() {
+        return launcher;
+    }
 
-	public void update(float delta) {
-		this.battery.update(delta);
-		this.generator.update(delta);
-	}
+    public Generator getGenerator() {
+        return this.generator;
+    }
 
-	public float getRockWidth() {
-		return rockWidth;
-	}
+    public void update(float delta) {
+        this.battery.update(delta);
+        this.generator.update(delta);
+    }
 
-	public float getScreenWidth() {
-		return screenWidth;
-	}
-	
-	public Ground getGround(){
-		return ground;
-	}
-	
-	public float getGroundY(){
-		return ground.getBounds().y;
-	}
-	
-	public float getGapWidth(){
-		return gapWidth;
-	}
+    public float getRockWidth() {
+        return rockWidth;
+    }
 
-	public PauseButton getPauseButton() {
-		return pauseButton;
-	}
+    public float getScreenWidth() {
+        return screenWidth;
+    }
 
-	public void setPauseButton(PauseButton pauseButton) {
-		this.pauseButton = pauseButton;
-	}
+    public Ground getGround(){
+        return ground;
+    }
 
-	public GameScreen getScreen() {
-		return screen;
-	}
+    public float getGroundY(){
+        return ground.getBounds().y;
+    }
 
-	public GameOverButton getGameOverButton() {
-		return gameOverButton;
-	}
+    public float getGapWidth(){
+        return gapWidth;
+    }
 
-	public void reset (){
+    public PauseButton getPauseButton() {
+        return pauseButton;
+    }
 
-		generator.reset();
-		launcher.reset();
-		battery.reset();
-	}
+    public void setPauseButton(PauseButton pauseButton) {
+        this.pauseButton = pauseButton;
+    }
+
+    public GameScreen getScreen() {
+        return screen;
+    }
+
+    public GameOverButton getGameOverButton() {
+        return gameOverButton;
+    }
+
+
+
+    public void reset (){
+
+        generator.reset();
+        launcher.reset();
+        battery.reset();
+    }
 }
