@@ -91,6 +91,17 @@ public class Asteroid implements Poolable {
         this.health = health;
     }
 
+    public void normalDamage(){
+        this.health --;
+        if(this.health <= 0){
+            isAlive = false;
+        }
+    }
+
+    public void instaKill(){
+        this.health = 0;
+    }
+
 //    public static int getType() {
 //        return type;
 //    }

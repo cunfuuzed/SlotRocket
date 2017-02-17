@@ -192,14 +192,15 @@ public class GameRenderer {
         shapeRenderer.end();
 
         batcher.begin();
-        batcher.disableBlending();
+//        batcher.disableBlending();
         // checking if there are any explosions to draw
         if (generator.getExplosions().size > 0) {
-
+            Explosion burst;
+//            Gdx.app.log("GameRender", String.valueOf(generator.getExplosions().size));
             for (int i = 0; i < generator.getExplosions().size; i++) {
-                Explosion burst = generator.getExplosions().get(i);
+                burst = generator.getExplosions().get(i);
                 TextureRegion currentFrame = burst.getFrame();
-                batcher.draw(currentFrame, burst.getX() - rockWidth, burst.getY() + rockWidth,
+                batcher.draw(currentFrame, burst.getX() - rockWidth, burst.getY() - rockWidth,
                         2 * rockWidth, 2 * rockWidth);
                 burst.advanceTime(delta);
                 if (burst.isDone()) { //when done, remove explosions

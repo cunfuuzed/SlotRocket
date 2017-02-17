@@ -109,7 +109,7 @@ public class GameScreen implements Screen {
           the the render method is called to render objects affected by logic
            */
         renderer.render(delta);
-        logger.log();
+//        logger.log();
         runTime += delta;
 
     }

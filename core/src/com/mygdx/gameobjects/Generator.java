@@ -76,15 +76,15 @@ public class Generator {
     }
 
     public void update(float delta) {
-        // updates live asteroids, deletes destroyed ones
+        // updates live asteroids
         Asteroid item;
         if (liveAsteroids.size > 0) {
-            for (int i = 0; i < liveAsteroids.size; i++) {
+            for (int i = 0; i < liveAsteroids.size; i++) { //loop for live asteroids
                 //creates loop Asteroid object
                 item = (Asteroid) liveAsteroids.get(i);
                 //checks if the asteroid hits the ground and kills it and does damage if it does
                 if (item.getBounds().overlaps(myWorld.getGround().getBounds())) {
-                    item.setHealth(0);
+                    item.instaKill();
                     scoreKeeper.doDamage();
 //                    Gdx.app.log("Generator", item.getClass().toString());
                 }
@@ -96,12 +96,17 @@ public class Generator {
 /*                  deprecated
 *                   add a vector showing where an explosion should take place
                    Vector2 burst = burstPool.obtain(); */
-//                  creates explosion object
-                    item.getBounds().getCenter(burstPos);
-                    Explosion blast = explosionPool.obtain();
-                    blast.setPosition(burstPos);
-                    explosions.add(blast);
-                    // remove destroyed asteroid from live array
+//                  creates explosion object from a destroyed asteroid
+//                    makeExplosion(item);
+//                    liveAsteroids.removeIndex(i);
+//                    // returns asteroid to it's respective pool type
+//                    freeAsteroids(item);
+                }
+            }
+            for (int i = 0; i <liveAsteroids.size ; i++) { //loop for dead asteroids
+                item =  liveAsteroids.get(i);
+                if(item.isAlive() == false){
+                    makeExplosion(item);
                     liveAsteroids.removeIndex(i);
                     // returns asteroid to it's respective pool type
                     freeAsteroids(item);
@@ -234,6 +239,19 @@ public class Generator {
 
     public void explosionDone(Explosion burst) {
         explosionPool.free(burst);
+    }
+
+    /**
+     * creates an explosion object from the explosion pool, at the center of
+     * the destroyed asteroid
+     * @param rock the asteroid that is destroyed
+     */
+    public void makeExplosion(Asteroid rock){
+
+        rock.getBounds().getCenter(burstPos);
+        Explosion blast = explosionPool.obtain();
+        blast.setPosition(burstPos);
+        explosions.add(blast);
     }
 
 }

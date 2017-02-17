@@ -22,6 +22,10 @@ public class Explosion implements Pool.Poolable {
         position = new Vector2();
     }
 
+    /**
+     * moves the animation forward by the time delta
+     * @param delta time since the last render frame call
+     */
     public void advanceTime(float delta) {
         time += delta;
     }

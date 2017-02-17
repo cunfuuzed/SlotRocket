@@ -67,13 +67,16 @@ public class Battery {
                         fitsonCollision = false;
                         Asteroid rock = (Asteroid) myWorld.getGenerator().getAsteroids().get(j);
                         if(rock.getBounds().contains(missile.getBounds())){
-                            Gdx.app.log("Battery", "missile inside rock");
+//                            Gdx.app.log("Battery", "missile inside rock");
                             fitsonCollision = fits(missile.getGap(),rock.getGap());
-                            Gdx.app.log("Battery", "Fits on collision = " + fitsonCollision);
+//                            Gdx.app.log("Battery", "Fits on collision = " + fitsonCollision);
                             if(fitsonCollision){
-                                actionOnHit(rock);
-                                rock.setHealth(-1);
-                                missile.setAlive(false);
+                                actionOnHit(rock); //performs special action if needed
+                                rock.normalDamage(); // damages rock
+                                missile.setAlive(false); // kills missile on fits() = true
+                                if(!rock.isAlive()){
+                                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(rock);
+                                }
                             }
                         }
                     }
@@ -142,7 +145,7 @@ public class Battery {
 
         switch (actionType){
             case 1:
-                //case: asteroid hit is a bomb, checks if any near asteroids are destroyed in blast
+                //case: asteroid hit is a bomb type, checks if any near asteroids are destroyed in blast
                 BombAsteroid bombRock = (BombAsteroid) rock;
                 bombRock.getBounds().getCenter(tempCenter);
                 for(int j = 0; j < myWorld.getGenerator().getAsteroids().size; j++){

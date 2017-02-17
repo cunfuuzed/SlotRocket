@@ -1,5 +1,7 @@
 package com.mygdx.gameworld;
 
+import com.badlogic.gdx.Gdx;
+import com.mygdx.gameobjects.Asteroid;
 import com.mygdx.slotrocket.SRGame;
 import com.mygdx.srHelpers.LevelsContainer;
 import com.mygdx.srHelpers.ScreenState;
@@ -47,8 +49,7 @@ public class ScoreKeeper {
 //    };
 
 
-
-    public ScoreKeeper(SRGame myGame){
+    public ScoreKeeper(SRGame myGame) {
 
         asteroidsDestroyed = 0;
         totalScore = 0;
@@ -59,6 +60,7 @@ public class ScoreKeeper {
         maxMissiles = 0;
         this.myGame = myGame;
         maxHealth = 100;
+
 
 
     }
@@ -84,8 +86,6 @@ public class ScoreKeeper {
     }
 
 
-
-
     public int getCurrentDamage() {
         return currentDamage;
     }
@@ -97,6 +97,10 @@ public class ScoreKeeper {
 
     public LevelsContainer getCurrentlevel() {
         return currentlevel;
+    }
+
+    public void setCurrentlevel(LevelsContainer currentlevel) {
+        this.currentlevel = currentlevel;
     }
 
     public int getMaxAsteroids() {
@@ -118,46 +122,45 @@ public class ScoreKeeper {
         this.maxMissiles = maxMissiles;
     }
 
-    public void initWorld(){
+    public void initWorld() {
         this.world = myGame.getGameScreen().getWorld();
     }
 
-    public void doDamage(){
+    public void doDamage() {
 //        this.currentDamage += 1;
 //        Gdx.app.log("scoreKeeper" , "health = " + (maxHealth - currentDamage));
-        if(currentDamage >= maxHealth){
+        if (currentDamage >= maxHealth) {
             world.getScreen().setState(ScreenState.GAMEOVER);
         }
     }
-    public void resetDamage(){
+
+    public void scoreHit(Asteroid rock) {
+        int type = rock.specialAction();
+
+
+        switch (type) {
+            case 0:
+                totalScore += 10;
+                break;
+            case 1:
+                totalScore += 15;
+                break;
+        }
+        Gdx.app.log("ScoreKeeper", "Current Score:" + totalScore);
+    }
+
+    public void resetDamage() {
         this.currentDamage = 0;
     }
 
-//	private void initLevels(){
-//
-//
-//		this.level_1 = new Level(spawnRates[1], fallSpeeds[1], clearPoints[1],
-//				copyClasses(1, asteroidTypes), copyPoints(1, asteroidPoints));
-//
-//		this.level_2 = new Level(spawnRates[2], fallSpeeds[2], clearPoints[2],
-//				copyClasses(2, asteroidTypes), copyPoints(2, asteroidPoints));
-//
-//	}
-
-    private Class[] copyClasses(int numTypes, Class[] toBeCopied){
-        Class[] classesCopy = new Class[numTypes];
-
-        System.arraycopy(toBeCopied, 0, classesCopy, 0, numTypes);
-
-        return classesCopy;
+    public void advanceLevel(){
+        for(LevelsContainer level : LevelsContainer.values()){
+            level.ordinal();
+        }
     }
 
-    private int[] copyPoints(int numTypes, int[] toBeCopied){
-        int[] classesCopy = new int[numTypes];
 
-        System.arraycopy(toBeCopied, 0, classesCopy, 0, numTypes);
 
-        return classesCopy;
-    }
+
 
 }
