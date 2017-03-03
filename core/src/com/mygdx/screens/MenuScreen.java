@@ -3,6 +3,7 @@ package com.mygdx.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.mygdx.menuworld.MenuRenderer;
 import com.mygdx.menuworld.MenuWorld;
 import com.badlogic.gdx.Game;
@@ -22,6 +23,7 @@ public class MenuScreen implements Screen {
     InputMultiplexer multiplexer;
     private ScreenState state;
     private Screen otherScreen;
+    private BitmapFont bigFont;
 
 
     public MenuScreen(SRGame myGame, Screen otherScreen) {
@@ -111,6 +113,10 @@ public class MenuScreen implements Screen {
     }
 
     public void initTextures() {
+        bigFont = myGame.getManager().get("data/VanadineBold.ttf", BitmapFont.class);
+    }
 
+    public BitmapFont getBigFont() {
+        return bigFont;
     }
 }

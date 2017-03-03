@@ -116,18 +116,20 @@ public class Generator {
         // increase the total runTime by the frame render time: delta
         runTime += delta;
         // spawns first asteroid at time spawnInterval
-        if (releaseTime == 0.0f) {
-            releaseTime += spawnInterval;
-        }
+//        if (releaseTime == 0.0f) {
+//            releaseTime += spawnInterval;
+//        }
+//
+//        if (runTime >= releaseTime) {
+//
+//            if (randomizer.nextFloat() > 0.5f) {
+//                spawnBasic();
+//            } else {
+//                spawnBomb();
+//            }
+//        }
 
-        if (runTime >= releaseTime) {
-
-            if (randomizer.nextFloat() > 0.5f) {
-                spawnBasic();
-            } else {
-                spawnBomb();
-            }
-        }
+        spawn(runTime);
 
     }
 
@@ -252,6 +254,21 @@ public class Generator {
         Explosion blast = explosionPool.obtain();
         blast.setPosition(burstPos);
         explosions.add(blast);
+    }
+
+    private void spawn(float runtime){
+        if (releaseTime == 0.0f) {
+            releaseTime += spawnInterval;
+        }
+
+        if (runTime >= releaseTime) {
+
+            if (randomizer.nextFloat() > 0.5f) {
+                spawnBasic();
+            } else {
+                spawnBomb();
+            }
+        }
     }
 
 }

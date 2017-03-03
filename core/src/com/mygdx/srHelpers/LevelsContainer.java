@@ -17,7 +17,7 @@ public enum LevelsContainer {
 
     LEVEL1(2.0f, Gdx.graphics.getWidth()/8, 100, new Class[]{Asteroid.class},
             new int[] {10}, new float[] {1.0f}),
-    LEVEL2(2.0f, Gdx.graphics.getWidth()/8, 100, new Class[]{Asteroid.class, BombAsteroid.class},
+    LEVEL2(2.0f, Gdx.graphics.getWidth()/8, 200, new Class[]{Asteroid.class, BombAsteroid.class},
             new int[] {10, 15}, new float[] {0.5f, 0.5f});
 //    LEVEL3,
 //    LEVEL4,

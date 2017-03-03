@@ -6,6 +6,8 @@ import com.mygdx.slotrocket.SRGame;
 import com.mygdx.srHelpers.LevelsContainer;
 import com.mygdx.srHelpers.ScreenState;
 
+import java.util.Iterator;
+
 public class ScoreKeeper {
 
     private int asteroidsDestroyed;
@@ -19,6 +21,7 @@ public class ScoreKeeper {
     private GameWorld world;
     private Level level_1;
     private Level level_2;
+
 
 //    private float spawnRates[] = {
 //            2.0f,
@@ -60,6 +63,7 @@ public class ScoreKeeper {
         maxMissiles = 0;
         this.myGame = myGame;
         maxHealth = 100;
+
 
 
 
@@ -146,7 +150,13 @@ public class ScoreKeeper {
                 totalScore += 15;
                 break;
         }
+        if(totalScore >= currentlevel.getClearPoints()){
+            advanceLevel();
+        }
         Gdx.app.log("ScoreKeeper", "Current Score:" + totalScore);
+        Gdx.app.log("ScoreKeeper", "Current level:" + (currentlevel.ordinal() + 1));
+
+
     }
 
     public void resetDamage() {
@@ -155,7 +165,10 @@ public class ScoreKeeper {
 
     public void advanceLevel(){
         for(LevelsContainer level : LevelsContainer.values()){
-            level.ordinal();
+            if(level.ordinal() == (currentlevel.ordinal() + 1)){
+                currentlevel = level;
+            }
+
         }
     }
 
