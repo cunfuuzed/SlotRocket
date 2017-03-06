@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.menuobjects.StartGameButton;
@@ -22,7 +23,9 @@ public class MenuRenderer {
     private SpriteBatch batcher;
     private StartGameButton startButton;
     private MenuScreen menuScreen;
-    private BitmapFont bigFont;
+    private GlyphLayout title;
+    private float titleCenter;
+//    private BitmapFont bigFont;
 
     public MenuRenderer(MenuWorld myWorld, float screenWidth, float screenHeight,
                         MenuScreen menuScreen) {
@@ -39,6 +42,9 @@ public class MenuRenderer {
 
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
+        title = new GlyphLayout();
+
+        titleCenter = (title.width)/2;
 
     }
 
@@ -55,5 +61,13 @@ public class MenuRenderer {
                 startButton.getBounds().width, startButton.getBounds().height);
         shapeRenderer.end();
 
+        batcher.begin();
+        menuScreen.getBigFont().draw(batcher, title, (Gdx.graphics.getWidth()/2 - title.width/2),
+                Gdx.graphics.getHeight()/4);
+        batcher.end();
+    }
+
+    public void setTitle(){
+        title.setText(menuScreen.getBigFont(), "Rockets");
     }
 }

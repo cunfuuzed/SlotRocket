@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -49,6 +50,7 @@ public class GameRenderer {
     private boolean texturesLoaded;
     private float stateTime;
     private float rockWidth;
+    private GlyphLayout rocksDestroyed;
 
     private final Array<Animation> explosionAnims = new Array<Animation>(false, 4);
 
@@ -81,6 +83,7 @@ public class GameRenderer {
         texturesLoaded = false;
         stateTime = 0f;
         rockWidth = screenWidth / 7;
+        rocksDestroyed = new GlyphLayout();
 
         initGameobjects();
 
@@ -209,6 +212,10 @@ public class GameRenderer {
                 }
             }
         }
+        // draw textures
+        rocksDestroyed.setText(gameScreen.getGameFont(),
+                "Score: " + gameScreen.getMyGame().getScoreKeeper().getAsteroidsDestroyed());
+        gameScreen.getGameFont().draw(batcher, rocksDestroyed, rockWidth/2, rockWidth/2);
         batcher.end();
     }
 

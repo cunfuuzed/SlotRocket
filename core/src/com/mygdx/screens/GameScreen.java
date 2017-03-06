@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.gameworld.GameRenderer;
 import com.mygdx.gameworld.GameWorld;
@@ -29,6 +30,7 @@ public class GameScreen implements Screen {
     private Texture explosion;
     private FPSLogger logger;
     private TextureRegion[] explosionFrames;
+    private BitmapFont gameFont;
 
 
     public enum GameState {
@@ -190,6 +192,7 @@ public class GameScreen implements Screen {
 
     public void initTexures() {
         explosion = myGame.getManager().get("data/explosion_W_alpha.png", Texture.class);
+        gameFont = myGame.getManager().get("data/nevis.ttf", BitmapFont.class);
     }
 
     public void makeFrames() {
@@ -212,6 +215,10 @@ public class GameScreen implements Screen {
 
     public TextureRegion[] getExplosionFrames() {
         return explosionFrames;
+    }
+
+    public BitmapFont getGameFont() {
+        return gameFont;
     }
 
     public GameRenderer getRenderer() {

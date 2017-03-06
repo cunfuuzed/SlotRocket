@@ -32,8 +32,18 @@ public class LoadScreen implements Screen {
         FreetypeFontLoader.FreeTypeFontLoaderParameter menuFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         menuFont.fontFileName = "data/VanadineBold.ttf";
         menuFont.fontParameters.size = Gdx.graphics.getWidth()/7;
-//        menuFont.fontParameters.color = Color.WHITE;
+        menuFont.fontParameters.color = Color.WHITE;
+        menuFont.fontParameters.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        menuFont.fontParameters.flip = true;
         myGame.getManager().load("data/VanadineBold.ttf", BitmapFont.class, menuFont);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter gameFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        gameFont.fontFileName = "data/nevis.ttf";
+        gameFont.fontParameters.size = Gdx.graphics.getWidth()/15;
+        gameFont.fontParameters.color = Color.WHITE;
+        gameFont.fontParameters.characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz:1234567890";
+        gameFont.fontParameters.flip = true;
+        myGame.getManager().load("data/nevis.ttf", BitmapFont.class, gameFont);
 
         myGame.getManager().load("data/explosion_W_alpha.png", Texture.class);
     }
@@ -54,6 +64,7 @@ public class LoadScreen implements Screen {
             myGame.getGameScreen().initTexures();
             myGame.getGameScreen().makeFrames();
             myGame.getMenuScreen().initTextures();
+            myGame.getMenuScreen().getRenderer().setTitle();
 //            myGame.getGameScreen().getRenderer().makeTextures();
             myGame.setMenuScreen();
         } else {
