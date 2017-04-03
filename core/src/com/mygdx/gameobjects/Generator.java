@@ -107,6 +107,7 @@ public class Generator {
                 item =  liveAsteroids.get(i);
                 if(item.isAlive() == false){
                     makeExplosion(item);
+                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(item);
                     liveAsteroids.removeIndex(i);
                     // returns asteroid to it's respective pool type
                     freeAsteroids(item);

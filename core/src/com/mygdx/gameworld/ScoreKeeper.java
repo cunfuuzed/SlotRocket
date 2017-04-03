@@ -145,9 +145,11 @@ public class ScoreKeeper {
         switch (type) {
             case 0:
                 totalScore += 10;
+                asteroidsDestroyed ++;
                 break;
             case 1:
                 totalScore += 15;
+                asteroidsDestroyed ++;
                 break;
         }
         if(totalScore >= currentlevel.getClearPoints()){

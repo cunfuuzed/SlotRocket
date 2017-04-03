@@ -47,7 +47,8 @@ public class Battery {
         roidWidth = new Vector2();
         tempCenter = new Vector2();
         tempCenter2 = new Vector2();
-        missileVelocity = -100;
+//        missileVelocity = -100;
+        missileVelocity = -Gdx.graphics.getHeight()/5;
 
     }
 
@@ -75,7 +76,7 @@ public class Battery {
                                 rock.normalDamage(); // damages rock
                                 missile.setAlive(false); // kills missile on fits() = true
                                 if(!rock.isAlive()){
-                                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(rock);
+//                                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(rock);
                                 }
                             }
                         }
