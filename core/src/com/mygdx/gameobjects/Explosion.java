@@ -11,16 +11,22 @@ import com.badlogic.gdx.utils.Pool;
 
 public class Explosion implements Pool.Poolable {
 
-    private Animation animation;
+//    private Animation animation;
     private float time;
     private Vector2 position;
+    private float duration;
 
-    public Explosion(float duration, TextureRegion[] textures) {
-        animation = new Animation<TextureRegion>(duration, textures);
-        animation.setPlayMode(Animation.PlayMode.NORMAL);
+    public Explosion (float duration){
+        this.duration = duration;
         time = 0.0f;
-        position = new Vector2();
     }
+
+//    public Explosion(float duration, TextureRegion[] textures) {
+//        animation = new Animation<TextureRegion>(duration, textures);
+//        animation.setPlayMode(Animation.PlayMode.NORMAL);
+//        time = 0.0f;
+//        position = new Vector2();
+//    }
 
     /**
      * moves the animation forward by the time delta
@@ -30,10 +36,10 @@ public class Explosion implements Pool.Poolable {
         time += delta;
     }
 
-    public TextureRegion getFrame() {
-        TextureRegion frame = (TextureRegion) animation.getKeyFrame(time);
-        return frame;
-    }
+//    public TextureRegion getFrame() {
+//        TextureRegion frame = (TextureRegion) animation.getKeyFrame(time);
+//        return frame;
+//    }
 
     public void setPosition(Vector2 position) {
         this.position = position;
@@ -48,11 +54,19 @@ public class Explosion implements Pool.Poolable {
     }
 
     public boolean isDone() {
-        if (animation.isAnimationFinished(time)) {
+        if (time > duration){
             return true;
-        } else {
+        }else{
             return false;
         }
+
+
+
+//        if (animation.isAnimationFinished(time)) {
+//            return true;
+//        } else {
+//            return false;
+//        }
     }
 
     @Override
