@@ -53,7 +53,11 @@ public class Explosion implements Pool.Poolable {
         return this.position.y;
     }
 
-    public boolean isDone() {
+    public float getTime() {
+        return time;
+    }
+
+    public boolean isDone(float duration) {
         if (time > duration){
             return true;
         }else{

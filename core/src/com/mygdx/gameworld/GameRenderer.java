@@ -45,21 +45,21 @@ public class GameRenderer {
     private GameOverButton gameOverButton;
     private Texture explosion;
     private GameScreen gameScreen;
-    private TextureRegion[] explosionFrames;
-    //    private Animation standardExplosion;
+//    private TextureRegion[] explosionFrames;
+//    private Animation standardExplosion;
     private boolean texturesLoaded;
     private float stateTime;
     private float rockWidth;
     private GlyphLayout rocksDestroyed;
 
-    private final Array<Animation> explosionAnims = new Array<Animation>(false, 4);
-
-    private final Pool<Animation> expoAnimsPool = new Pool(10) {
-        @Override
-        protected Object newObject() {
-            return new Animation(1.0f, explosionFrames);
-        }
-    };
+//    private final Array<Animation> explosionAnims = new Array<Animation>(false, 4);
+//
+//    private final Pool<Animation> expoAnimsPool = new Pool(10) {
+//        @Override
+//        protected Object newObject() {
+//            return new Animation(1.0f, explosionFrames);
+//        }
+//    };
 
     public GameRenderer(GameWorld myWorld, float screenWidth, float screenHeight,
                         GameScreen gameScreen) {
@@ -202,11 +202,11 @@ public class GameRenderer {
 //            Gdx.app.log("GameRender", String.valueOf(generator.getExplosions().size));
             for (int i = 0; i < generator.getExplosions().size; i++) {
                 burst = generator.getExplosions().get(i);
-                TextureRegion currentFrame = burst.getFrame();
+                TextureRegion currentFrame = (TextureRegion) gameScreen.getStandardExplosion().getKeyFrame(burst.getTime());
                 batcher.draw(currentFrame, burst.getX() - rockWidth, burst.getY() - rockWidth,
                         2 * rockWidth, 2 * rockWidth);
                 burst.advanceTime(delta);
-                if (burst.isDone()) { //when done, remove explosions
+                if (burst.isDone(gameScreen.getStandardExplosion().getAnimationDuration())) { //when done, remove explosions
                     generator.getExplosions().removeIndex(i);
                     generator.explosionDone(burst);
                 }

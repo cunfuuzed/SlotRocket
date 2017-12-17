@@ -63,6 +63,7 @@ public class LoadScreen implements Screen {
             Gdx.app.log("LoadScreen", String.valueOf(myGame.getManager().getProgress()));
             myGame.getGameScreen().initTexures();
             myGame.getGameScreen().makeFrames();
+            myGame.getGameScreen().makeAnimations();
             myGame.getMenuScreen().initTextures();
             myGame.getMenuScreen().getRenderer().setTitle();
 //            myGame.getGameScreen().getRenderer().makeTextures();

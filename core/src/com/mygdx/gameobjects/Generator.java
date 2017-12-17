@@ -33,7 +33,8 @@ public class Generator {
 
         @Override
         protected Object newObject() {
-            return new Explosion(0.03f, myWorld.getScreen().getExplosionFrames());
+//            return new Explosion(0.03f, myWorld.getScreen().getExplosionFrames());
+            return new Explosion(0.03f);
         }
     };
 
