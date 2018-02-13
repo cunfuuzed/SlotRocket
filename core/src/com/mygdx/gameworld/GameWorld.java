@@ -11,6 +11,7 @@ import com.mygdx.gameobjects.Block;
 import com.mygdx.gameobjects.GameOverButton;
 import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameobjects.Ground;
+import com.mygdx.gameobjects.InstantFitButton;
 import com.mygdx.gameobjects.PauseButton;
 import com.mygdx.screens.GameScreen;
 import com.mygdx.slotrocket.SRGame;
@@ -29,6 +30,7 @@ public class GameWorld {
     private PauseButton pauseButton;
     private GameScreen screen;
     private GameOverButton gameOverButton;
+    private InstantFitButton instantFitButton;
 
 
 
@@ -54,6 +56,8 @@ public class GameWorld {
                 screenWidth - buttonWidth, getGroundY() + buttonWidth,screen);
         this.gameOverButton = new GameOverButton(new Rectangle(rockWidth, 4 * rockWidth,
                 5 * rockWidth, rockWidth), this.screen);
+        this.instantFitButton = new InstantFitButton(new Rectangle(buttonWidth/2, getGroundY() + buttonWidth,
+                buttonWidth, buttonWidth), this.screen);
 
 
     }
@@ -115,7 +119,9 @@ public class GameWorld {
         return gameOverButton;
     }
 
-
+    public InstantFitButton getInstantFitButton() {
+        return instantFitButton;
+    }
 
     public void reset (){
 

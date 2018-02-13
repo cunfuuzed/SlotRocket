@@ -14,6 +14,7 @@ import com.mygdx.gameworld.GameWorld;
 import com.mygdx.slotrocket.SRGame;
 import com.mygdx.srHelpers.InputHandler;
 import com.mygdx.srHelpers.PauseHandler;
+import com.mygdx.srHelpers.PowerUpsHandler;
 import com.mygdx.srHelpers.ScreenState;
 import com.mygdx.srHelpers.UpperHandler;
 
@@ -37,7 +38,7 @@ public class GameScreen implements Screen {
 
     public enum GameState {
 
-        READY, RUNNING, PAUSED, GAMEOVER
+        NEWGAME, RUNNING, PAUSED, GAMEOVER
     }
 
     public GameState getCurrentState() {
@@ -79,6 +80,7 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new InputHandler(world));
         multiplexer.addProcessor(new UpperHandler(world));
         multiplexer.addProcessor(new PauseHandler(world));
+        multiplexer.addProcessor(new PowerUpsHandler(world));
 
 
 //        Gdx.input.setInputProcessor(multiplexer);
@@ -87,7 +89,7 @@ public class GameScreen implements Screen {
         state = ScreenState.RUNNING;
         logger = new FPSLogger();
 
-
+//    end of constructor
     }
 
 

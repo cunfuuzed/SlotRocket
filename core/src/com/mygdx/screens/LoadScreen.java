@@ -60,6 +60,7 @@ public class LoadScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (myGame.getManager().update()) {
+//            if .update() returns true, all loading of assets finished, can now init game objects
             Gdx.app.log("LoadScreen", String.valueOf(myGame.getManager().getProgress()));
             myGame.getGameScreen().initTexures();
             myGame.getGameScreen().makeFrames();

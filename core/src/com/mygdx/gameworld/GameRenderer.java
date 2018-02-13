@@ -21,6 +21,7 @@ import com.mygdx.gameobjects.Explosion;
 import com.mygdx.gameobjects.GameOverButton;
 import com.mygdx.gameobjects.Generator;
 import com.mygdx.gameobjects.Ground;
+import com.mygdx.gameobjects.InstantFitButton;
 import com.mygdx.gameobjects.Missile;
 import com.mygdx.gameobjects.PauseButton;
 import com.mygdx.screens.GameScreen;
@@ -43,6 +44,7 @@ public class GameRenderer {
     private float halfGap;
     private PauseButton pauseButton;
     private GameOverButton gameOverButton;
+    private InstantFitButton instantFitButton;
     private Texture explosion;
     private GameScreen gameScreen;
 //    private TextureRegion[] explosionFrames;
@@ -168,6 +170,12 @@ public class GameRenderer {
         shapeRenderer.rect(pauseButton.getBounds().x, pauseButton.getBounds().y,
                 pauseButton.getBounds().width, pauseButton.getBounds().height);
 
+        //instant fit button
+        shapeRenderer.rect(instantFitButton.getBounds().x, instantFitButton.getBounds().y,
+                instantFitButton.getBounds().width, instantFitButton.getBounds().height);
+
+
+
         /*
         game over button, HAS to be at this end of the solid shape stack to render over
         the asteroids
@@ -227,6 +235,7 @@ public class GameRenderer {
         battery = myWorld.getBattery();
         missiles = battery.getMissles();
         gameOverButton = myWorld.getGameOverButton();
+        instantFitButton = myWorld.getInstantFitButton();
 
     }
 

@@ -22,6 +22,7 @@ public class Battery {
     private Vector2 tempCenter;
     private Vector2 tempCenter2;
     private float missileVelocity;
+    private int instantFitsLeft;
 
 
     //all render calls for missiles are made on the liveMissiles array
@@ -49,6 +50,7 @@ public class Battery {
         tempCenter2 = new Vector2();
 //        missileVelocity = -100;
         missileVelocity = -Gdx.graphics.getHeight()/5;
+        instantFitsLeft = 0;
 
     }
 
@@ -119,12 +121,19 @@ public class Battery {
     // fire method called when user clicks an an asteroid to fire a missile at that
     //specific asteroid
     public void fire(int index) {
-        boolean fits = false;
+        boolean fits;
         Missile item = missilePool.obtain();
         item.setPosition(generator.getAsteroids().get(index).getPosition().x
                 - missileWidth.x * gapWidth, ground.getBounds().y - 4 * gapWidth);
+        if(instantFitsLeft <= 0){
         shapeGap();
-        item.setGap(launchGap);
+        item.setGap(launchGap);}
+        else{
+            item.setGap(generator.getAsteroids().get(index).getGap());
+            if(instantFitsLeft > 0){
+                instantFitsLeft -=1;
+            }
+        }
         fits = fits(launchGap, generator.getAsteroids().get(index).getGap());
         if (fits) {
             item.setFits(true);
@@ -138,6 +147,11 @@ public class Battery {
 
     public Array<Missile> getMissles() {
         return liveMissiles;
+    }
+
+    public void setInstantFitsLeft() {
+        this.instantFitsLeft = this.instantFitsLeft +1;
+        Gdx.app.log("Battery", this.instantFitsLeft + " Instant Fit Missiles");
     }
 
     //optional action to take on the asteroid that is hit

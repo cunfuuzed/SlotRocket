@@ -62,7 +62,7 @@ public class ScoreKeeper {
         maxAsteroids = 0;
         maxMissiles = 0;
         this.myGame = myGame;
-        maxHealth = 100;
+        maxHealth = 3;
 
 
 
@@ -131,7 +131,7 @@ public class ScoreKeeper {
     }
 
     public void doDamage() {
-//        this.currentDamage += 1;
+        this.currentDamage += 1;
 //        Gdx.app.log("scoreKeeper" , "health = " + (maxHealth - currentDamage));
         if (currentDamage >= maxHealth) {
             world.getScreen().setState(ScreenState.GAMEOVER);
