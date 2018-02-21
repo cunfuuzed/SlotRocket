@@ -78,7 +78,7 @@ public class Battery {
                                 rock.normalDamage(); // damages rock
                                 missile.setAlive(false); // kills missile on fits() = true
                                 if(!rock.isAlive()){
-//                                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(rock);
+                                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(rock);
                                 }
                             }
                         }

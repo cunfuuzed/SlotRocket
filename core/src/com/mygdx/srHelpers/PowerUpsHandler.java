@@ -2,6 +2,7 @@ package com.mygdx.srHelpers;
 
 import com.badlogic.gdx.InputProcessor;
 import com.mygdx.gameobjects.InstantFitButton;
+import com.mygdx.gameobjects.ShieldButton;
 import com.mygdx.gameworld.GameWorld;
 
 /**
@@ -12,10 +13,12 @@ public class PowerUpsHandler implements InputProcessor {
 
     private GameWorld world;
     private InstantFitButton instantFitButton;
+    private ShieldButton shieldButton;
 
     public PowerUpsHandler(GameWorld world) {
         this.world = world;
         this.instantFitButton = world.getInstantFitButton();
+        this.shieldButton = world.getShieldButton();
     }
 
     @Override
@@ -38,6 +41,8 @@ public class PowerUpsHandler implements InputProcessor {
 
         if (instantFitButton.getBounds().contains(screenX, screenY)) {
             instantFitButton.onPress();
+        }else if (shieldButton.getBounds().contains(screenX,screenY)){
+            shieldButton.onPress();
         }
         return false;
     }

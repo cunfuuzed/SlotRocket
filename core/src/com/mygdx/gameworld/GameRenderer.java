@@ -24,6 +24,7 @@ import com.mygdx.gameobjects.Ground;
 import com.mygdx.gameobjects.InstantFitButton;
 import com.mygdx.gameobjects.Missile;
 import com.mygdx.gameobjects.PauseButton;
+import com.mygdx.gameobjects.ShieldButton;
 import com.mygdx.screens.GameScreen;
 import com.mygdx.srHelpers.ScreenState;
 
@@ -45,6 +46,7 @@ public class GameRenderer {
     private PauseButton pauseButton;
     private GameOverButton gameOverButton;
     private InstantFitButton instantFitButton;
+    private ShieldButton shieldButton;
     private Texture explosion;
     private GameScreen gameScreen;
 //    private TextureRegion[] explosionFrames;
@@ -174,6 +176,9 @@ public class GameRenderer {
         shapeRenderer.rect(instantFitButton.getBounds().x, instantFitButton.getBounds().y,
                 instantFitButton.getBounds().width, instantFitButton.getBounds().height);
 
+        shapeRenderer.rect(shieldButton.getBounds().x, shieldButton.getBounds().y,
+                shieldButton.getBounds().width, shieldButton.getBounds().height);
+
 
 
         /*
@@ -236,6 +241,7 @@ public class GameRenderer {
         missiles = battery.getMissles();
         gameOverButton = myWorld.getGameOverButton();
         instantFitButton = myWorld.getInstantFitButton();
+        shieldButton = myWorld.getShieldButton();
 
     }
 

@@ -2,6 +2,7 @@ package com.mygdx.srHelpers;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.screens.GameScreen;
 
 /**
  * generic button,
@@ -9,8 +10,10 @@ import com.badlogic.gdx.math.Vector2;
  */
 public abstract class AbstractButton {
 
-    private Rectangle  bounds;
-    private Vector2 position;
+    public Rectangle  bounds;
+    public Vector2 position;
+    public GameScreen gameScreen;
+
 
 
 

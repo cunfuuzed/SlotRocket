@@ -104,11 +104,12 @@ public class Generator {
 //                    freeAsteroids(item);
                 }
             }
-            for (int i = 0; i <liveAsteroids.size ; i++) { //loop for dead asteroids
+            //loop to remove dead asteroids
+            for (int i = 0; i <liveAsteroids.size ; i++) {
                 item =  liveAsteroids.get(i);
                 if(item.isAlive() == false){
                     makeExplosion(item);
-                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(item);
+//                    myWorld.getScreen().getMyGame().getScoreKeeper().scoreHit(item);
                     liveAsteroids.removeIndex(i);
                     // returns asteroid to it's respective pool type
                     freeAsteroids(item);

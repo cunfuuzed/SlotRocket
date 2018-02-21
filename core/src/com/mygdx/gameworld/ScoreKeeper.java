@@ -21,6 +21,7 @@ public class ScoreKeeper {
     private GameWorld world;
     private Level level_1;
     private Level level_2;
+    private int sheildHitPoints;
 
 
 //    private float spawnRates[] = {
@@ -63,6 +64,7 @@ public class ScoreKeeper {
         maxMissiles = 0;
         this.myGame = myGame;
         maxHealth = 3;
+        sheildHitPoints = 0;
 
 
 
@@ -131,7 +133,11 @@ public class ScoreKeeper {
     }
 
     public void doDamage() {
-        this.currentDamage += 1;
+        if(sheildHitPoints <=0){
+        this.currentDamage += 1;}
+        else{
+            sheildHitPoints --;
+        }
 //        Gdx.app.log("scoreKeeper" , "health = " + (maxHealth - currentDamage));
         if (currentDamage >= maxHealth) {
             world.getScreen().setState(ScreenState.GAMEOVER);
@@ -162,6 +168,7 @@ public class ScoreKeeper {
     }
 
     public void resetDamage() {
+
         this.currentDamage = 0;
     }
 
@@ -174,8 +181,13 @@ public class ScoreKeeper {
         }
     }
 
+    public void shieldActive(){
+        if(sheildHitPoints <= 0){
+            sheildHitPoints = 3;}
+        Gdx.app.log("ScoreKeeper", "Shield Hit Points:" + sheildHitPoints);
+    }
 
-
-
-
+    public int getSheildHitPoints() {
+        return sheildHitPoints;
+    }
 }
